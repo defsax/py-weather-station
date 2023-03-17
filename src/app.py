@@ -5,35 +5,37 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
     QAction,
-    QMenuBar
+    QMenuBar,
+    QLabel
 )
 
 class MainWindow(QMainWindow):
     def __init__(self):
       super(MainWindow, self).__init__()
-      self.setFullscreen = QAction("&Fullscreen", self)
-      self.setFullscreen.setShortcut("F11")
-      self.setFullscreen.setStatusTip("Change to fullscreen mode")
-      self.setFullscreen.triggered.connect(self.toggleFullScreen)
+
+      #start full screen
+      # ~ self.showFullScreen()
       
-      # ~ self.menu = QMenuBar(self)
+      self.setFixedWidth(800)
+      self.setFixedHeight(480)
+      
+      widget = QLabel("Welcome to the Weather Station")
+      font = widget.font()
+      font.setPointSize(30)
+      widget.setFont(font)
+      widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
-      # ~ self.file_menu = self.menu.addMenu("&File")
-      # ~ self.file_menu.addAction(self.openFile)
-      # ~ self.file_menu.addAction(self.saveFile)
-      # ~ self.file_menu.addAction(self.exitApp)
-
-      # ~ self.view_menu = self.menu.addMenu("&View")
-      # ~ self.view_menu.addAction(self.setFullscreen)
+      self.setCentralWidget(widget)
+      
+    def __del__(self):
+      print("\nApp unwind.")
+      
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
           self.close()
         if e.key() == Qt.Key_F11:
           self.toggleFullScreen()
-
-    def __del__(self):
-      print("\nApp unwind.")
 
     def toggleFullScreen(self):
       if self.isFullScreen():
