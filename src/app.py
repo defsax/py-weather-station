@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (
     QLabel
 )
 from widgets.title_bar import TitleBar
+from widgets.content_container import ContentBox
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -41,8 +42,9 @@ class MainWindow(QMainWindow):
       # create layout containers
       self.overall_layout = QVBoxLayout()
       self.overall_layout.addWidget(self.title)  
+      self.overall_layout.addWidget(self.content)  
       
-      self.overall_layout.setContentsMargins(10, 0, 0, 0)
+      self.overall_layout.setContentsMargins(10, 10, 10, 10)
       
       # dummy widget to hold layout, layout holds actual widgets
       widget = QWidget()
@@ -54,6 +56,7 @@ class MainWindow(QMainWindow):
     
     def setup_widgets(self):
       self.title = TitleBar()
+      self.content = ContentBox()
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
