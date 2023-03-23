@@ -1,4 +1,5 @@
 import sys
+import yaml
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -32,6 +33,9 @@ class MainWindow(QMainWindow):
       # ~ widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
       # ~ self.setCentralWidget(widget)
+      # ~ self.config = yaml.safe_load(open("/home/pi/code/python/py-weather-station/settings.yml"))
+      # ~ for i, item in enumerate(self.config['mission_ids']):
+          # ~ print(item)
       self.setup_widgets()
       self.setup_ui()
       

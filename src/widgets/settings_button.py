@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QStyle, QGridLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QStyle
 
 
 class SettingsButton(QWidget):
