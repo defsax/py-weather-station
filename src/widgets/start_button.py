@@ -32,11 +32,13 @@ class StartQuit(QWidget):
     
   def handle_start(self):
     print("start")
-    # ~ if self.start_btn is not None:
-      # ~ text = self.start_btn.text()
-      # ~ if text == "Start":
+    if self.start_btn is not None:
+      text = self.start_btn.text()
+      if text == "Start":
         # ~ self.parent.start_timelapse()
-        # ~ self.start_btn.setText("Stop")
-      # ~ else:
+        self.start_btn.setText("Stop")
+        self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: red")
+      else:
         # ~ self.parent.stop_timelapse()
-        # ~ self.start_btn.setText("Start")
+        self.start_btn.setText("Start")
+        self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: green")
