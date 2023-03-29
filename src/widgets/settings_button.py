@@ -4,8 +4,10 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QStyle
 
 
 class SettingsButton(QWidget):
-  def __init__(self):
+  def __init__(self, main_view):
     super(SettingsButton, self).__init__()
+    
+    self.main_view = main_view
     
     pixmapi = getattr(QStyle, 'SP_FileIcon')
     icon = self.style().standardIcon(pixmapi)
@@ -21,4 +23,10 @@ class SettingsButton(QWidget):
     self.setLayout(layout)
 
   def handleButton(self):
-    print("settings button")  
+    if self.main_view.isVisible():
+        print("Settings...")
+        self.main_view.hide()
+    else:
+        print("Main...")
+        self.main_view.show()
+    # ~ self.hide()
