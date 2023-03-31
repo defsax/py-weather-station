@@ -22,8 +22,6 @@ class Time(QWidget):
     self.clock.start()
 
     layout.addWidget(self.time)
-    
-    print("time init")
 
   @pyqtSlot(str)      
   def set_time(self, time_str):

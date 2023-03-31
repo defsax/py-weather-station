@@ -16,6 +16,11 @@ from widgets.title_bar import TitleBar
 from widgets.content_container import ContentBox
 from widgets.main_view import MainView
 
+from threads.arduino_thread import ArduinoHandler
+from threads.timelapse_thread import TimelapseThread
+
+from helpers import list_serial_devices
+
 class MainWindow(QMainWindow):
     def __init__(self):
       super(MainWindow, self).__init__()
@@ -26,31 +31,34 @@ class MainWindow(QMainWindow):
       # ~ self.setFixedWidth(800)
       # ~ self.setFixedHeight(480)
       self.setGeometry(100, 100, 800, 480)
-      
-      # ~ widget = QLabel("Welcome to the Weather Station")
-      # ~ font = widget.font()
-      # ~ font.setPointSize(30)
-      # ~ widget.setFont(font)
-      # ~ widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-
-      # ~ self.setCentralWidget(widget)
-      # ~ self.config = yaml.safe_load(open("/home/pi/code/python/py-weather-station/settings.yml"))
-      # ~ for i, item in enumerate(self.config['mission_ids']):
-          # ~ print(item)
+      self.get_sensors()
+      self.setup_threads()
       self.setup_widgets()
       self.setup_ui()
       
     def __del__(self):
       print("\nApp unwind.")
       
+    def get_sensors(self):
+      # set up arduinos
+      device_list = list_serial_devices()
+      self.sensors = []
+      if getattr(device_list, 'size', len(device_list)):
+        for device in device_list:
+          print("Arduino connected:", device)
+          self.sensors.append(ArduinoHandler(device))
+      else: 
+        print("No arduino(s) connected")
+      
+    def setup_threads(self):
+      self.timelapse_thread = TimelapseThread(self.sensors)
+    
     def setup_ui(self):      
       # create layout containers
       self.overall_layout = QVBoxLayout()
       self.overall_layout.addWidget(self.title) 
       self.overall_layout.addWidget(self.main_view)
-      self.overall_layout.setContentsMargins(10, 10, 10, 10)
-      # ~ self.overall_layout.addWidget(self.content)  
-      
+      self.overall_layout.setContentsMargins(10, 10, 10, 10)      
       
       # dummy widget to hold layout, layout holds actual widgets
       widget = QWidget()
@@ -61,8 +69,7 @@ class MainWindow(QMainWindow):
       
     
     def setup_widgets(self):
-      # ~ self.content = ContentBox()
-      self.main_view = MainView()
+      self.main_view = MainView(self.timelapse_thread)
       self.title = TitleBar(self.main_view)
 
     def keyPressEvent(self, e):

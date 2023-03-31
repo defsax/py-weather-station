@@ -3,11 +3,11 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout, QPushButton, QSizePolicy
 
-
 class StartQuit(QWidget):
-
-  def __init__(self):
+  def __init__(self, timelapse_thread):
     super(StartQuit, self).__init__()
+    
+    self.timelapse_thread = timelapse_thread
     
     layout = QVBoxLayout()
     layout.setContentsMargins(5, 0, 0, 0)
@@ -26,19 +26,19 @@ class StartQuit(QWidget):
     
     # start with start button disabled
     # ~ self.start_btn.setEnabled(False)
-    
-    
 
     
   def handle_start(self):
-    print("start")
     if self.start_btn is not None:
       text = self.start_btn.text()
       if text == "Start":
-        # ~ self.parent.start_timelapse()
+        print("start")
         self.start_btn.setText("Stop")
         self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: red")
+        self.timelapse_thread.setup()
+        self.timelapse_thread.start()
       else:
-        # ~ self.parent.stop_timelapse()
+        print("stop")
+        self.timelapse_thread.stop()
         self.start_btn.setText("Start")
         self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: green")

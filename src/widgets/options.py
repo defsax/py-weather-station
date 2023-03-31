@@ -7,8 +7,7 @@ from widgets.start_button import StartQuit
 from widgets.drop_down import DropDown
 
 class Options(QWidget):
-
-  def __init__(self):
+  def __init__(self, timelapse_thread):
     super(Options, self).__init__()
     
     layout = QVBoxLayout()
@@ -26,6 +25,6 @@ class Options(QWidget):
     layout.addWidget(title)
     layout.addWidget(DropDown())
     layout.addStretch()
-    layout.addWidget(StartQuit())
+    layout.addWidget(StartQuit(timelapse_thread))
 
     layout.setAlignment(Qt.AlignTop)

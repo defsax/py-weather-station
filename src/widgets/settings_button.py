@@ -16,7 +16,6 @@ class SettingsButton(QWidget):
     self.button.clicked.connect(self.handleButton)
     # ~ self.button.setIconSize(QtCore.QSize(20,20))
     self.button.setIcon(icon)
-    print('button init')
     
     layout = QHBoxLayout()
     layout.addWidget(self.button)

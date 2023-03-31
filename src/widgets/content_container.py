@@ -6,8 +6,7 @@ from widgets.live_tabs import LiveTabs
 from widgets.options import Options
 
 class ContentBox(QWidget):
-
-  def __init__(self):
+  def __init__(self, timelapse_thread):
     super(ContentBox, self).__init__()
     
     layout = QHBoxLayout()
@@ -15,4 +14,4 @@ class ContentBox(QWidget):
     layout.setContentsMargins(0, 0, 0, 0)
 
     layout.addWidget(LiveTabs(), 2)
-    layout.addWidget(Options(), 1)
+    layout.addWidget(Options(timelapse_thread), 1)
