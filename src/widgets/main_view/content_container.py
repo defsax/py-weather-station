@@ -2,8 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QHBoxLayout, QComboBox
 from PyQt5.QtGui import QPalette, QColor
 
-from widgets.live_tabs import LiveTabs
-from widgets.options import Options
+from widgets.main_view.live_tabs import LiveTabs
+from widgets.main_view.options import Options
 
 class ContentBox(QWidget):
   def __init__(self, timelapse_thread):

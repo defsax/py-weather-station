@@ -12,9 +12,9 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel
 )
-from widgets.title_bar import TitleBar
-from widgets.content_container import ContentBox
-from widgets.main_view import MainView
+from widgets.title_bar.title_bar import TitleBar
+from widgets.main_view.main_view import MainView
+from widgets.settings_view.settings_view import SettingsView
 
 from threads.arduino_thread import ArduinoHandler
 from threads.timelapse_thread import TimelapseThread
@@ -70,7 +70,8 @@ class MainWindow(QMainWindow):
     
     def setup_widgets(self):
       self.main_view = MainView(self.timelapse_thread)
-      self.title = TitleBar(self.main_view)
+      self.settings_view = SettingsView()
+      self.title = TitleBar(self.main_view, self.settings_view)
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:

@@ -2,12 +2,12 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QLabel, QWidget, QHBoxLayout
 from PyQt5.QtGui import QPalette, QColor
 
-from widgets.settings_button import SettingsButton
-from widgets.time import Time
+from widgets.title_bar.settings_button import SettingsButton
+from widgets.title_bar.time import Time
 
 class TitleBar(QWidget):
 
-  def __init__(self, parent):
+  def __init__(self, main, settings):
     super(TitleBar, self).__init__()
 
     layout = QHBoxLayout()
@@ -23,7 +23,7 @@ class TitleBar(QWidget):
     # time and time thread
     time = Time()
     
-    settings_button = SettingsButton(parent)
+    settings_button = SettingsButton(main, settings)
 
     layout.addWidget(title)
     layout.addStretch()

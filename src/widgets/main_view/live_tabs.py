@@ -1,5 +1,3 @@
-import sys
-
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtWidgets import (
     QTabWidget,
@@ -18,8 +16,6 @@ class LiveTabs(QWidget):
     self.tabs.setTabPosition(QTabWidget.North)
     # ~ tabs.setIconSize(QSize(20,20))
     self.tabs.setMovable(True)
-    
-
     
     # set layout and style
     self.layout.addWidget(self.tabs)

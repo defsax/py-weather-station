@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout
 )
-from widgets.content_container import ContentBox
+from widgets.main_view.content_container import ContentBox
 
 class MainView(QMainWindow):
     def __init__(self, timelapse_thread):

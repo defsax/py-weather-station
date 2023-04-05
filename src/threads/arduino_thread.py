@@ -26,11 +26,8 @@ class ArduinoHandler(QWidget):
         try:
           text = self.serial.readLine().data().decode()
           text = text.rstrip('\r\n')
-          # ~ print(self.port, ":", text)
           self.rh = text.split(",")[0]
           self.temp = text.split(",")[1]
-          
-          # ~ print(self.port +"\ttemp: "+ self.temp +"\trh: " + self.rh) 
         except UnicodeDecodeError:
           print("UnicodeDecodeError")
         except:
