@@ -2,8 +2,8 @@ from Phidget22.Phidget import *
 from Phidget22.Devices.VoltageInput import *
 from datetime import datetime
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtWidgets import QWidget
 
 class LightThread(QWidget):
   # set up pyqtsignal
@@ -11,41 +11,35 @@ class LightThread(QWidget):
   
   def __init__(self):
     super(LightThread, self).__init__()
+  
+    self.voltage = 0
+    self.wm2 = 0
+  
+    self.light_sensor = VoltageInput()
+    self.light_sensor.setChannel(1)
     
-
-    # ~ def main():
-    voltageInput1 = VoltageInput()
-    voltageInput1.setChannel(1)
-    voltageInput1.setOnVoltageChangeHandler(onVoltageChange)
-    voltageInput1.openWaitForAttachment(5000)
-    
+    self.light_sensor.setOnVoltageChangeHandler(self.onVoltageChange)
+    self.light_sensor.setOnAttachHandler(self.onAttachHandler)
+    self.light_sensor.setOnDetachHandler(self.onDetachHandler)
     try:
-      input("Press Enter to Stop\n")
-    except (Exception, KeyboardInterrupt):
-      pass
+      self.light_sensor.openWaitForAttachment(1000)
+      self.is_attached = True
+    except:
+      self.is_attached = False
+  
+  def __del__(self):
+    print("Light sensor close.")
+    self.light_sensor.close()
 
-    voltageInput1.close()
-    # ~ main()
+  def onAttachHandler(self, phidget_handle):
+    print("Light sensor Attached!", phidget_handle)    
+    self.is_attached = True
+    
+  def onDetachHandler(self, phidget_handle):
+    print("Light sensor Detached!", phidget_handle)
+    self.is_attached = False
 
-  def onVoltageChange(self, voltage):
-    # ~ print("Voltage [" + str(self.getChannel()) + "]: " + str(0.4 * voltage * 1000))
-    print("Voltage [" + str(self.getChannel()) + "]: " + str(voltage))
-
-  def run(self):     
-    # ~ while True:
-      # ~ # get input
-      # ~ adc = ioe.input(input_pin)
-      # ~ vref = ioe.get_adc_vref()
-      # ~ print(vref)
-      # ~ adc = round(adc, 4)
-      
-
-      # ~ if adc != last_adc:
-        # ~ light = 0.4 * adc * 1000
-        # ~ print(str(round(light, 4)) + "Wm^2")
-        # ~ print("{:.4f}v\n".format(adc))
-        # ~ last_adc = adc
-        
-        # ~ # wm^2 = 0.4 * adc * 1000
-
-      # ~ time.sleep(1)
+  def onVoltageChange(self, phidget_handle, voltage):
+    self.voltage = voltage
+    self.wm2 = 0.4 * voltage * 1000
+    print("Voltage: " + str(self.voltage) + "\t\tW m^2: " + str(self.wm2))

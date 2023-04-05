@@ -9,10 +9,10 @@ from PyQt5.QtWidgets import (
 from widgets.main_view.content_container import ContentBox
 
 class MainView(QMainWindow):
-    def __init__(self, timelapse_thread):
+    def __init__(self):
       super(MainView, self).__init__()
     
-      self.setup_widgets(timelapse_thread)
+      self.setup_widgets()
       self.setup_ui()
       
     def setup_ui(self):      
@@ -30,5 +30,5 @@ class MainView(QMainWindow):
       self.setCentralWidget(widget)
       
     
-    def setup_widgets(self, timelapse_thread):
-      self.content = ContentBox(timelapse_thread)
+    def setup_widgets(self):
+      self.content = ContentBox()

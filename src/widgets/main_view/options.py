@@ -3,9 +3,10 @@ from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout
 
 from widgets.main_view.start_button import StartQuit
 from widgets.main_view.drop_down import DropDown
+from widgets.main_view.status_box.status import StatusBox
 
 class Options(QWidget):
-  def __init__(self, timelapse_thread):
+  def __init__(self):
     super(Options, self).__init__()
     
     layout = QVBoxLayout()
@@ -23,6 +24,7 @@ class Options(QWidget):
     layout.addWidget(title)
     layout.addWidget(DropDown())
     layout.addStretch()
-    layout.addWidget(StartQuit(timelapse_thread))
+    layout.addWidget(StatusBox())
+    layout.addWidget(StartQuit())
 
     layout.setAlignment(Qt.AlignTop)

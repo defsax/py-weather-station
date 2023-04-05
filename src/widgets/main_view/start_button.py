@@ -1,13 +1,12 @@
 import sys
+from pydispatch import dispatcher
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout, QPushButton, QSizePolicy
 
 class StartQuit(QWidget):
-  def __init__(self, timelapse_thread):
+  def __init__(self):
     super(StartQuit, self).__init__()
-    
-    self.timelapse_thread = timelapse_thread
     
     layout = QVBoxLayout()
     layout.setContentsMargins(5, 0, 0, 0)
@@ -32,13 +31,12 @@ class StartQuit(QWidget):
     if self.start_btn is not None:
       text = self.start_btn.text()
       if text == "Start":
-        print("start")
+        dispatcher.send(signal = "toggle_logging", sender = {"msg": "start"} )
+        
         self.start_btn.setText("Stop")
         self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: red")
-        self.timelapse_thread.setup()
-        self.timelapse_thread.start()
       else:
-        print("stop")
-        self.timelapse_thread.stop()
+        dispatcher.send(signal = "toggle_logging", sender = {"msg": "stop"} )
+  
         self.start_btn.setText("Start")
         self.start_btn.setStyleSheet("padding: 10px; border-radius: 10px; background-color: green")

@@ -1,5 +1,6 @@
 import sys
 import yaml
+from pydispatch import dispatcher
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -36,6 +37,8 @@ class MainWindow(QMainWindow):
       self.setup_widgets()
       self.setup_ui()
       
+      dispatcher.connect(self.toggle_timelapse, signal = "toggle_logging", sender = dispatcher.Any)
+      
     def __del__(self):
       print("\nApp unwind.")
       
@@ -66,10 +69,17 @@ class MainWindow(QMainWindow):
 
       # dummy widget used as central widget
       self.setCentralWidget(widget)
-      
+    
+    def toggle_timelapse(self, sender):
+      print("msg",sender["msg"])
+      if sender["msg"] == "start":
+        self.timelapse_thread.setup()
+        self.timelapse_thread.start()
+      elif sender["msg"] == "stop":
+        self.timelapse_thread.stop()
     
     def setup_widgets(self):
-      self.main_view = MainView(self.timelapse_thread)
+      self.main_view = MainView()
       self.settings_view = SettingsView()
       self.title = TitleBar(self.main_view, self.settings_view)
 
