@@ -17,7 +17,7 @@ def list_serial_devices():
   return res
 
 # return one item
-def get_temp_port():
+def get_t_rh_port():
   ports = glob.glob('/dev/ttyACM[0-9]*')
   res = ""
   for port in ports:
@@ -27,7 +27,6 @@ def get_temp_port():
       s.close()
     except:
       pass
-      
   return res
 
 @pyqtSlot(str, str)

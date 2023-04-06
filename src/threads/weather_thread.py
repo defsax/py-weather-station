@@ -11,4 +11,9 @@ class WeatherThread(QThread):
   def run(self):
     while True:
       self.sensors.update(interval=5.0)
+      
+      if self.sensors.updated_wind_rain:
+        print(self.sensors.wind_direction)
+        print(self.sensors.wind_speed)
+      
       time.sleep(1.0)

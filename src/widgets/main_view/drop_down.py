@@ -11,7 +11,7 @@ class DropDown(QWidget):
     combobox = QComboBox()
     self.config = yaml.safe_load(open("/home/pi/code/python/py-weather-station/settings.yml"))
     for i, item in enumerate(self.config['mission_ids']):
-        print(item)
+        # ~ print(item)
         combobox.addItem(item)
     
     # Connect signals to the methods.

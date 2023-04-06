@@ -32,14 +32,14 @@ class LightThread(QWidget):
     self.light_sensor.close()
 
   def onAttachHandler(self, phidget_handle):
-    print("Light sensor Attached!", phidget_handle)    
+    # ~ print("Light sensor Attached!", phidget_handle)    
     self.is_attached = True
     
   def onDetachHandler(self, phidget_handle):
-    print("Light sensor Detached!", phidget_handle)
+    # ~ print("Light sensor Detached!", phidget_handle)
     self.is_attached = False
 
   def onVoltageChange(self, phidget_handle, voltage):
     self.voltage = voltage
     self.wm2 = 0.4 * voltage * 1000
-    print("Voltage: " + str(self.voltage) + "\t\tW m^2: " + str(self.wm2))
+    # ~ print("Voltage: " + str(self.voltage) + "\t\tW m^2: " + str(self.wm2))

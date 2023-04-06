@@ -9,10 +9,10 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from threads.sensor_manager import SensorManager
 
 class TimelapseThread(QThread):
-  def __init__(self, sensors):
+  def __init__(self):
     super(TimelapseThread, self).__init__()
     self.sensor_manager = SensorManager()
-    self.sensors = sensors
+    # ~ self.sensors = sensors
     # ~ self.weatherhat_sensors = weatherhat.WeatherHAT()
     
   def setup(self):
@@ -45,6 +45,7 @@ class TimelapseThread(QThread):
     # ~ self.weatherhat_sensors.update(interval=60.0)
     # ~ print(self.weatherhat_sensors.temperature)
     
+    # lock thread here just in case
     
     # log temp and rh for each sensor          
     for i, sensor in enumerate(self.sensors):

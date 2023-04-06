@@ -17,10 +17,11 @@ from widgets.title_bar.title_bar import TitleBar
 from widgets.main_view.main_view import MainView
 from widgets.settings_view.settings_view import SettingsView
 
-from threads.arduino_thread import ArduinoHandler
+# ~ from threads.arduino_thread import ArduinoHandler
 from threads.timelapse_thread import TimelapseThread
+from threads.server import ServerThread
 
-from helpers import list_serial_devices
+# ~ from helpers import list_serial_devices
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow):
       # ~ self.setFixedWidth(800)
       # ~ self.setFixedHeight(480)
       self.setGeometry(100, 100, 800, 480)
-      self.get_sensors()
+      # ~ self.get_sensors()
       self.setup_threads()
       self.setup_widgets()
       self.setup_ui()
@@ -42,19 +43,20 @@ class MainWindow(QMainWindow):
     def __del__(self):
       print("\nApp unwind.")
       
-    def get_sensors(self):
-      # set up arduinos
-      device_list = list_serial_devices()
-      self.sensors = []
-      if getattr(device_list, 'size', len(device_list)):
-        for device in device_list:
-          print("Arduino connected:", device)
-          self.sensors.append(ArduinoHandler(device))
-      else: 
-        print("No arduino(s) connected")
+    # ~ def get_sensors(self):
+      # ~ # set up arduinos
+      # ~ device_list = list_serial_devices()
+      # ~ self.sensors = []
+      # ~ if getattr(device_list, 'size', len(device_list)):
+        # ~ for device in device_list:
+          # ~ print("Arduino connected:", device)
+          # ~ self.sensors.append(ArduinoHandler(device))
+      # ~ else: 
+        # ~ print("No arduino(s) connected")
       
     def setup_threads(self):
-      self.timelapse_thread = TimelapseThread(self.sensors)
+      self.timelapse_thread = TimelapseThread()
+      # ~ self.server_thread = ServerThread()
     
     def setup_ui(self):      
       # create layout containers
