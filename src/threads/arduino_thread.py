@@ -5,7 +5,7 @@ import serial
 import time
 from helpers import get_t_rh_port
 
-class ArduinoHandler(QThread):
+class ArduinoHandler(QWidget):
   def __init__(self):
     super(ArduinoHandler, self).__init__()        
     self.temp = 0
@@ -14,10 +14,25 @@ class ArduinoHandler(QThread):
     self.serial = None
     
     # ~ self.init_serial(port)
-    print(QSerialPortInfo.availablePorts())
+    print("available ports:")
+    serialPortInfos = QSerialPortInfo.availablePorts()
+    for portInfo in serialPortInfos:
+      print(portInfo.portName())
     
     self.start_serial()
-    self.start()
+  
+  def __del__(self):
+    print("\nArduino handler unwind.")
+    
+    if self.serial:
+      print(self.serial)
+      self.serial.close()
+      print(self.serial)
+  
+  def handle_error(self, error):
+    if error == QtSerialPort.QSerialPort.NoError:
+      return
+    print(error, self.serial_port.errorString())
   
   def start_serial(self):
     port = get_t_rh_port()
@@ -31,23 +46,15 @@ class ArduinoHandler(QThread):
         readyRead = self.receive
       )
       self.serial.open(QIODevice.ReadOnly)
-      
-  def stop_serial(self):
-    try:
-      self.serial.close()
-      self.serial = None
-      self.port = None
-      self.temp = 0
-      self.rh = 0
-    except:
-      print("could not close serial")
+      self.serial.errorOccurred.connect(self.handle_error)
+
     
   def get_data(self):
     return self.port, self.rh, self.temp
 
   @pyqtSlot()
   def receive(self):
-    print("rh, temp:", self.rh, self.temp)
+    # ~ print("rh, temp:", self.rh, self.temp)
     while self.serial.canReadLine():
       try:
         text = self.serial.readLine().data().decode()
@@ -60,25 +67,4 @@ class ArduinoHandler(QThread):
       except:
         print("Other error")
         
-  def run(self):     
-    while True:
-      print("arduino thread", self.temp, self.rh)
-      port = get_t_rh_port()
-      if port != "":
-        # ~ print("Temperature/RH sensor connected.")
-        # ~ self.set_sensor_status.emit("temp_rh", "Connected", "green")
-        
-        # ~ self.t_rh_thread.serial.setPort(port)
-        # start serial port if not already started
-        if self.serial == None:
-          self.start_serial()
-        
-      else:
-        # ~ print("Temperature/RH sensor disconnected.")
-        # ~ self.set_sensor_status.emit("temp_rh", "Disconnected", "red")
-        
-        # close serial port if not already closed
-        if self.serial != None:
-          self.stop_serial()
-      time.sleep(5)
-
+ 

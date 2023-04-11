@@ -20,14 +20,14 @@ class ServerThread(QThread):
   def __init__(self):
     super(ServerThread, self).__init__()    
 
-    # ~ self.host_name = "10.42.0.1"
-    # ~ self.server_port = 8080
+    self.host_name = "10.42.0.1"
+    self.server_port = 8080
     
-    self.host_name = "localhost"
-    self.server_port = 8765
+    # ~ self.host_name = "localhost"
+    # ~ self.server_port = 8765
     
-    # ~ self.web_server = HTTPServer((self.host_name, self.server_port), MyServer)
-    print("Server started http://%s:%s" % (self.host_name, self.server_port))
+    self.web_server = HTTPServer((self.host_name, self.server_port), MyServer)
+    # ~ print("Server started http://%s:%s" % (self.host_name, self.server_port))
     self.start()
     
   async def echo(websocket):
@@ -40,8 +40,8 @@ class ServerThread(QThread):
   
   def run(self):
     try:
-      asyncio.run(self.main())
-      # ~ self.web_server.serve_forever()
+      # ~ asyncio.run(self.main())
+      self.web_server.serve_forever()
     except:
       print("web server error")
       

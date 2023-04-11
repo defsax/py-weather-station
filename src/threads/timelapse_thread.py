@@ -5,15 +5,12 @@ import time
 import os
 from PyQt5.QtCore import QThread, pyqtSignal
 
-# ~ import weatherhat
 from threads.sensor_manager import SensorManager
 
 class TimelapseThread(QThread):
   def __init__(self):
     super(TimelapseThread, self).__init__()
     self.sensor_manager = SensorManager()
-    # ~ self.sensors = sensors
-    # ~ self.weatherhat_sensors = weatherhat.WeatherHAT()
     
   def setup(self):
     print("timelapse thread setup")
@@ -31,7 +28,7 @@ class TimelapseThread(QThread):
     # write defaults (csv)
     try:
       with open(self.path + self.file_name, "a") as f:
-        f.write("time,humidity,temperature,pressure,light,wind_speed,wind_dir\n")
+        f.write("time,humidity,temperature,light,wind_speed,wind_dir\n")
         f.close()
     except:
       print("write setup error")
@@ -41,35 +38,43 @@ class TimelapseThread(QThread):
   def check_sensor(self, arg):
     print("check sensor", arg)
     
-  def log_data(self):
-    # ~ self.weatherhat_sensors.update(interval=60.0)
-    # ~ print(self.weatherhat_sensors.temperature)
+  def log_data(self):    
+    # TODO: lock thread here just in case
     
-    # lock thread here just in case
+    # log all data     
+    light = str(round(self.sensor_manager.light_thread.wm2, 4))
+    temperature = self.sensor_manager.t_rh_thread.temp
+    rh = self.sensor_manager.t_rh_thread.rh
+    wind_speed = str(round(self.sensor_manager.wind_speed, 4))
+    wind_dir = self.sensor_manager.wind_dir
     
-    # log temp and rh for each sensor          
-    for i, sensor in enumerate(self.sensors):
-      print(i, sensor)
-      port, rh, temp = sensor.get_data()
-      print("logging:", temp, rh)
+    print("\n\nlogging:\n")
+    print("light:", light)
+    print("temperature:", temperature)
+    print("rh:", rh)
+    print("wind speed:", wind_speed)
+    print("wind direction:", wind_dir)
+    print("\n")
       
-      try:
-        t = datetime.now()
-        date_time = t.strftime("%m-%d-%Y_%H-%M-%S")
-        print(self.path)
-        with open(self.path + self.file_name, "a") as f:
-          f.write(date_time + ",")
-          f.write(rh + ",")
-          f.write(temp + ",")
-          f.write("\n")
-          f.close()
-      except:
-        print("write error")
+    try:
+      t = datetime.now()
+      date_time = t.strftime("%m-%d-%Y_%H-%M-%S")
+      with open(self.path + self.file_name, "a") as f:
+        f.write(date_time + ",")
+        f.write(rh + ",")
+        f.write(temperature + ",")
+        f.write(light + ",")
+        f.write(wind_speed + ",")
+        f.write(wind_dir)
+        f.write("\n")
+        f.close()
+    except:
+      print("write error")
  
   
   def run(self):    
     while not self.exit_flag.wait(timeout=5):
-      self.check_sensor("args")
+      # ~ self.check_sensor("args")
       self.log_data()
 
     
