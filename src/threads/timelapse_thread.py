@@ -54,6 +54,7 @@ class TimelapseThread(QThread):
     print("rh:", rh)
     print("wind speed:", wind_speed)
     print("wind direction:", wind_dir)
+    print("name:")
     print("\n")
       
     try:

@@ -30,7 +30,8 @@ class ArduinoHandler(QWidget):
       print(self.serial)
   
   def handle_error(self, error):
-    if error == QtSerialPort.QSerialPort.NoError:
+    if error == QSerialPort.NoError:
+      print(error)
       return
     print(error, self.serial_port.errorString())
   

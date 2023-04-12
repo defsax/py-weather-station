@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
       
       # ~ self.setFixedWidth(800)
       # ~ self.setFixedHeight(480)
-      self.setGeometry(100, 100, 800, 480)
+      self.setGeometry(100, 100, 480, 800)
       # ~ self.get_sensors()
       self.setup_threads()
       self.setup_widgets()
@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
       
     def setup_threads(self):
       self.timelapse_thread = TimelapseThread()
-      # ~ self.server_thread = ServerThread()
+      self.server_thread = ServerThread()
     
     def setup_ui(self):      
       # create layout containers

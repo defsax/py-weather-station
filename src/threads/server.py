@@ -1,9 +1,26 @@
 import time
+import os
 from PyQt5.QtCore import QThread
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import http.server
+import socketserver
+
+
 import asyncio
 from websockets.server import serve
+
+class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):    
+  def do_GET(self):
+    print(self.path)
+    # ~ self.send_response(201)
+    # ~ self.send_header("Content-type", "text/html")
+    # ~ self.end_headers()
+    # ~ if self.path == '/':
+      # ~ self.path = "/home/pi/weather_station_data"
+      # ~ self.path = os.path.abspath("/home/pi/weather_station_data")
+      # ~ self.path = 'mywebpage.html'
+    return http.server.SimpleHTTPRequestHandler.do_GET(self)
 
 class MyServer(BaseHTTPRequestHandler):
   def do_GET(self):
@@ -13,6 +30,15 @@ class MyServer(BaseHTTPRequestHandler):
     self.wfile.write(bytes("<html><head><title>Pi Weather Station</title></head>", "utf-8"))
     self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
     self.wfile.write(bytes("<body>", "utf-8"))
+    mypath = os.path.abspath("/home/pi/weather_station_data")
+    from os import listdir
+    from os.path import isfile, join
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    # ~ print(onlyfiles)
+    for file_name in onlyfiles:
+      print(file_name)
+    # ~ <a href="/images/myw3schoolsimage.jpg" download>
+      self.wfile.write(bytes("<a href='%s' download>Download</a>" % file_name, "utf-8"))
     self.wfile.write(bytes("<p>Weather station data here.</p>", "utf-8"))
     self.wfile.write(bytes("</body></html>", "utf-8"))
 
@@ -22,11 +48,21 @@ class ServerThread(QThread):
 
     self.host_name = "10.42.0.1"
     self.server_port = 8080
+    self.path = os.path.abspath("/home/pi/weather_station_data")
+    
+    # ~ web_dir = os.path.join()
+    os.chdir(self.path)
+    
+    ###
+    # ~ self.handler = http.server.SimpleHTTPRequestHandler
+    self.handler = MyHttpRequestHandler
+    ###
+    
     
     # ~ self.host_name = "localhost"
     # ~ self.server_port = 8765
     
-    self.web_server = HTTPServer((self.host_name, self.server_port), MyServer)
+    # ~ self.web_server = HTTPServer((self.host_name, self.server_port), MyServer)
     # ~ print("Server started http://%s:%s" % (self.host_name, self.server_port))
     self.start()
     
@@ -41,7 +77,17 @@ class ServerThread(QThread):
   def run(self):
     try:
       # ~ asyncio.run(self.main())
-      self.web_server.serve_forever()
+      
+      # ~ self.web_server.serve_forever()
+      
+      ###
+      
+      with socketserver.TCPServer(("", self.server_port), self.handler) as httpd:
+        print("Server started at localhost:" + str(self.server_port))
+        httpd.serve_forever()
+      
+      ###
+      
     except:
       print("web server error")
       
