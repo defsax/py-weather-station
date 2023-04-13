@@ -5,81 +5,77 @@ import time
 import os
 from PyQt5.QtCore import QThread, pyqtSignal
 
-from threads.sensor_manager import SensorManager
 
 class TimelapseThread(QThread):
-  def __init__(self):
-    super(TimelapseThread, self).__init__()
-    self.sensor_manager = SensorManager()
-    
-  def setup(self):
-    print("timelapse thread setup")
-    
-    # get/set destination folder
-    self.path = os.path.abspath("/home/pi/weather_station_data")
+    def __init__(self, sensor_manager):
+        super(TimelapseThread, self).__init__()
+        self.sensor_manager = sensor_manager
 
-    # get and format date
-    start = datetime.now()
-    self.start_time = start.strftime("%m-%d-%Y_%H-%M-%S")
+    def setup(self):
+        print("timelapse thread setup")
 
-    # create file with mission id and date
-    self.file_name = "/test_" + self.start_time + ".csv"
+        # get/set destination folder
+        self.path = os.path.abspath("/home/pi/weather_station_data")
 
-    # write defaults (csv)
-    try:
-      with open(self.path + self.file_name, "a") as f:
-        f.write("time,humidity,temperature,light,wind_speed,wind_dir\n")
-        f.close()
-    except:
-      print("write setup error")
-    
-    self.exit_flag = Event()
-  
-  def check_sensor(self, arg):
-    print("check sensor", arg)
-    
-  def log_data(self):    
-    # TODO: lock thread here just in case
-    
-    # log all data     
-    light = str(round(self.sensor_manager.light_thread.wm2, 4))
-    temperature = self.sensor_manager.t_rh_thread.temp
-    rh = self.sensor_manager.t_rh_thread.rh
-    wind_speed = str(round(self.sensor_manager.wind_speed, 4))
-    wind_dir = self.sensor_manager.wind_dir
-    
-    print("\n\nlogging:\n")
-    print("light:", light)
-    print("temperature:", temperature)
-    print("rh:", rh)
-    print("wind speed:", wind_speed)
-    print("wind direction:", wind_dir)
-    print("name:")
-    print("\n")
-      
-    try:
-      t = datetime.now()
-      date_time = t.strftime("%m-%d-%Y_%H-%M-%S")
-      with open(self.path + self.file_name, "a") as f:
-        f.write(date_time + ",")
-        f.write(rh + ",")
-        f.write(temperature + ",")
-        f.write(light + ",")
-        f.write(wind_speed + ",")
-        f.write(wind_dir)
-        f.write("\n")
-        f.close()
-    except:
-      print("write error")
- 
-  
-  def run(self):    
-    while not self.exit_flag.wait(timeout=5):
-      # ~ self.check_sensor("args")
-      self.log_data()
+        # get and format date
+        start = datetime.now()
+        self.start_time = start.strftime("%m-%d-%Y_%H-%M-%S")
 
-    
-  def stop(self):
-    print("Timelapse thread stopping...")
-    self.exit_flag.set()
-    
+        # create file with mission id and date
+        self.file_name = "/test_" + self.start_time + ".csv"
+
+        # write defaults (csv)
+        try:
+            with open(self.path + self.file_name, "a") as f:
+                f.write("time,humidity,temperature,light,wind_speed,wind_dir\n")
+                f.close()
+        except:
+            print("write setup error")
+
+        self.exit_flag = Event()
+
+    def check_sensor(self, arg):
+        print("check sensor", arg)
+
+    def log_data(self):
+        # TODO: lock thread here just in case
+
+        # log all data
+        light = str(round(self.sensor_manager.light_thread.wm2, 4))
+        temperature = str(self.sensor_manager.t_rh_thread.temp)
+        rh = str(self.sensor_manager.t_rh_thread.rh)
+        wind_speed = str(round(self.sensor_manager.wind_speed, 4))
+        wind_dir = str(self.sensor_manager.wind_dir)
+
+        print("\n\nlogging:\n")
+        print("light:", light)
+        print("temperature:", temperature)
+        print("rh:", rh)
+        print("wind speed:", wind_speed)
+        print("wind direction:", wind_dir)
+        print("name:")
+        print("\n")
+
+        try:
+            t = datetime.now()
+            date_time = t.strftime("%m-%d-%Y_%H-%M-%S")
+            with open(self.path + self.file_name, "a") as f:
+                f.write(date_time + ",")
+                f.write(rh + ",")
+                f.write(temperature + ",")
+                f.write(light + ",")
+                f.write(wind_speed + ",")
+                f.write(wind_dir)
+                f.write("\n")
+                f.close()
+        except:
+            print("write error")
+
+    def run(self):
+        while not self.exit_flag.wait(timeout=5):
+            # ~ self.check_sensor("args")
+            self.log_data()
+
+    def stop(self):
+        print("Timelapse thread stopping...")
+        self.exit_flag.set()

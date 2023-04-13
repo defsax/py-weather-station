@@ -9,7 +9,7 @@ class StartQuit(QWidget):
     super(StartQuit, self).__init__()
     
     layout = QVBoxLayout()
-    layout.setContentsMargins(5, 0, 0, 0)
+    layout.setContentsMargins(0, 0, 0, 0)
     self.setLayout(layout)
     
     self.start_btn = QPushButton("Start", self)
