@@ -1,18 +1,8 @@
 import sys
-import yaml
 from pydispatch import dispatcher
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QAction,
-    QMenuBar,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-)
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from widgets.title_bar.title_bar import TitleBar
 from widgets.main_view.main_view import MainView
 from widgets.settings_view.settings_view import SettingsView
@@ -33,7 +23,7 @@ class MainWindow(QMainWindow):
         # ~ self.setFixedWidth(800)
         # ~ self.setFixedHeight(480)
         self.setGeometry(100, 100, 480, 800)
-        # ~ self.get_sensors()
+
         self.setup_threads()
         self.setup_widgets()
         self.setup_ui()
@@ -44,17 +34,6 @@ class MainWindow(QMainWindow):
 
     def __del__(self):
         print("\nApp unwind.")
-
-    # ~ def get_sensors(self):
-    # ~ # set up arduinos
-    # ~ device_list = list_serial_devices()
-    # ~ self.sensors = []
-    # ~ if getattr(device_list, 'size', len(device_list)):
-    # ~ for device in device_list:
-    # ~ print("Arduino connected:", device)
-    # ~ self.sensors.append(ArduinoHandler(device))
-    # ~ else:
-    # ~ print("No arduino(s) connected")
 
     def setup_threads(self):
         self.sensor_manager = SensorManager()
@@ -80,11 +59,23 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
     def toggle_timelapse(self, sender):
-        print("msg", sender["msg"])
+        mission_id = self.main_view.content.options.drop_down.combobox.currentText()
+        if not mission_id:
+            print("no mission id!")
+            return
+
         if sender["msg"] == "start":
-            self.timelapse_thread.setup()
+            dispatcher.send(signal="logging_status", sender={"msg": "start"})
+            self.main_view.content.options.start_stop_button.set_button_style(
+                "Stop", "red"
+            )
+            self.timelapse_thread.setup(mission_id)
             self.timelapse_thread.start()
         elif sender["msg"] == "stop":
+            dispatcher.send(signal="logging_status", sender={"msg": "stop"})
+            self.main_view.content.options.start_stop_button.set_button_style(
+                "Start", "green"
+            )
             self.timelapse_thread.stop()
 
     def setup_widgets(self):

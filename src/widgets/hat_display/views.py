@@ -304,7 +304,7 @@ class MainView(SensorView):
             (220, 100, 20),
             "LIGHT",
             self._data.lux.history(),
-            "Wm2",
+            "Wm^2",
             right=True,
             graph_mode=graph_mode,
         )

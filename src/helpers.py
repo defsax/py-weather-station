@@ -57,7 +57,7 @@ def write_to_yaml(key, value):
             # reset the position in the file (it's at the end since we read the file)
             f.seek(0)
             # write the updated YAML to the file
-            yaml.dump(content, f)
+            yaml.dump(content, f, explicit_start=True, default_flow_style=False)
             # throw away any (old) content of the file after the current position,
             # which is at the end of the YAML we just wrote.
             # since we added more content, it's unlikely that there is more content here,

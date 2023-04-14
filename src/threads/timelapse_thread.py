@@ -1,9 +1,7 @@
 from threading import Event
 from datetime import datetime
-import signal
-import time
 import os
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThread
 
 
 class TimelapseThread(QThread):
@@ -11,8 +9,9 @@ class TimelapseThread(QThread):
         super(TimelapseThread, self).__init__()
         self.sensor_manager = sensor_manager
 
-    def setup(self):
+    def setup(self, mission_id):
         print("timelapse thread setup")
+        self.mission_id = mission_id
 
         # get/set destination folder
         self.path = os.path.abspath("/home/pi/weather_station_data")
@@ -53,7 +52,7 @@ class TimelapseThread(QThread):
         print("rh:", rh)
         print("wind speed:", wind_speed)
         print("wind direction:", wind_dir)
-        print("name:")
+        print("name:", self.mission_id)
         print("\n")
 
         try:

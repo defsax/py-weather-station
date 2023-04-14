@@ -43,7 +43,7 @@ class SensorManager(QThread):
                 self.port = portInfo.portName()
 
         if self.port != "":
-            print("Temperature/RH sensor connected.")
+            # print("Temperature/RH sensor connected.")
             self.set_sensor_status.emit("temp_rh", "Connected", "green")
 
             # start serial port if not already started
@@ -51,7 +51,7 @@ class SensorManager(QThread):
                 self.start_sensor.emit()
                 print("serial created")
         else:
-            print("Temperature/RH sensor disconnected.")
+            # print("Temperature/RH sensor disconnected.")
             self.set_sensor_status.emit("temp_rh", "Disconnected", "red")
 
             # close serial port if not already closed

@@ -27,11 +27,6 @@ class ArduinoHandler(QWidget):
 
         self.start_serial()
 
-    def set_offset(self, sender):
-        self.temp_offset = sender["temp_offset"]
-        self.rh_offset = sender["hum_offset"]
-        print(sender)
-
     def __del__(self):
         print("\nArduino handler unwind.")
 
@@ -46,6 +41,10 @@ class ArduinoHandler(QWidget):
             print("serial error:", error)
             return
         print("serial error!", error, self.serial.errorString())
+
+    def set_offset(self, sender):
+        self.temp_offset = sender["temp_offset"]
+        self.rh_offset = sender["hum_offset"]
 
     @pyqtSlot()
     def start_serial(self):
@@ -101,7 +100,6 @@ class ArduinoHandler(QWidget):
                 #     self.temp,
                 # )
                 # send values out
-                print("temp:", temp)
                 dispatcher.send(
                     signal="broadcast_serial",
                     sender={"current_humidity": rh, "current_temperature": temp},
