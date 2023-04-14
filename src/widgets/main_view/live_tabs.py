@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
+from widgets.main_view.tabs.all_data import DataDisplay
+
 
 class LiveTabs(QWidget):
     def __init__(self):
@@ -21,6 +23,8 @@ class LiveTabs(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(10)
         self.setLayout(self.layout)
+
+        self.tabs.addTab(DataDisplay(), "Data")
 
     # ~ def add_cams_to_tabs(self, cameras):
     # ~ for i, cam in enumerate(cameras):

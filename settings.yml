@@ -1,6 +1,7 @@
 ---
-humidity_offset: -1.5
+humidity_offset: 2.25
 mission_ids:
 - Test
 - NFT
+- iybgu
 temperature_offset: -0.25
