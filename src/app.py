@@ -67,6 +67,9 @@ class MainWindow(QMainWindow):
         self.overall_layout = QVBoxLayout()
         self.overall_layout.addWidget(self.title)
         self.overall_layout.addWidget(self.main_view)
+        self.overall_layout.addWidget(self.settings_view)
+        self.main_view.show()
+        self.settings_view.hide()
         self.overall_layout.setContentsMargins(10, 10, 10, 10)
 
         # dummy widget to hold layout, layout holds actual widgets

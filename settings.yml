@@ -1,24 +1,8 @@
----
-# Employee records
-#~ martin:
-    #~ name: Martin D'vloper
-    #~ job: Developer
-    #~ skills:
-      #~ - python
-      #~ - perl
-      #~ - pascal
-#~ tabitha:
-    #~ name: Tabitha Bitumen
-    #~ job: Developer
-    #~ skills:
-      #~ - lisp
-      #~ - fortran
-      #~ - erlang
-
+humidity_offset: 2.75
 mission_ids:
-  - SCR
-  - NFT
-  - FY
-  - SOY
-  - BEANS
-
+- SCR
+- NFT
+- FY
+- SOY
+- BEANS
+temperature_offset: -0.25

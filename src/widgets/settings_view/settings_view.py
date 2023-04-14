@@ -1,51 +1,49 @@
-import sys
-
-from PyQt5.QtCore import Qt
+import yaml
 from PyQt5.QtWidgets import (
     QMainWindow,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QSlider
 )
-# ~ from widgets.content_container import ContentBox
+from widgets.settings_view.temp_slider import TempSlider
+from widgets.settings_view.hum_slider import HumSlider
+from widgets.settings_view.id_manager.id_manager import IdManager
+
 
 class SettingsView(QMainWindow):
     def __init__(self):
-      super(SettingsView, self).__init__()
-    
-      # ~ self.setup_widgets(timelapse_thread)
-      self.setup_ui()
-      
-    def setup_ui(self):      
-      # create layout containers
-      self.overall_layout = QVBoxLayout()
-      # ~ self.overall_layout.addWidget(self.content)  
-    
-      self.overall_layout.setContentsMargins(0, 0, 0, 0)
-    
-      self.slider = QSlider(Qt.Orientation.Horizontal, self)
-      self.slider.setRange(-1, 1)
-      self.slider.setSingleStep(0.25)
-      self.overall_layout.addWidget(self.slider)
-    
- 
-      layout = QHBoxLayout()
-      # ~ self.setLayout(layout)
-      layout.setContentsMargins(0, 0, 0, 0)
+        super(SettingsView, self).__init__()
 
-      # ~ layout.addWidget(LiveTabs(), 2)
-      # ~ layout.addWidget(Options(timelapse_thread), 1)
-    
- 
-      
-      # dummy widget to hold layout, layout holds actual widgets
-      widget = QWidget()
-      widget.setLayout(self.overall_layout)
+        self.setup_widgets()
+        self.setup_ui()
 
-      # dummy widget used as central widget
-      self.setCentralWidget(widget)
-      
-    
-    # ~ def setup_widgets(self, timelapse_thread):
-      # ~ self.content = ContentBox(timelapse_thread)
+    def setup_ui(self):
+        # create layout containers
+        self.overall_layout = QVBoxLayout()
+
+        self.overall_layout.setContentsMargins(0, 0, 0, 0)
+        self.overall_layout.addWidget(self.temp_slider)
+        self.overall_layout.addWidget(self.hum_slider)
+        self.overall_layout.addWidget(self.id_manager)
+
+        layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+
+        # dummy widget to hold layout, layout holds actual widgets
+        widget = QWidget()
+        widget.setLayout(self.overall_layout)
+
+        # dummy widget used as central widget
+        self.setCentralWidget(widget)
+
+    def setup_widgets(self):
+        try:
+            self.config = yaml.safe_load(
+                open("/home/pi/code/python/py-weather-station/settings.yml")
+            )
+        except:
+            print("Error reading settings.yml")
+
+        self.temp_slider = TempSlider(self.config["temperature_offset"])
+        self.hum_slider = HumSlider(self.config["humidity_offset"])
+        self.id_manager = IdManager()
