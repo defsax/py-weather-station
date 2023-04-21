@@ -2,7 +2,6 @@ import math
 import weatherhat
 from PIL import Image, ImageDraw, ImageFont
 
-from fonts.ttf import ManropeBold as UserFont
 
 COLOR_WHITE = (255, 255, 255)
 COLOR_BLUE = (31, 137, 251)
@@ -18,10 +17,26 @@ class View:
         self._image = image
         self._draw = ImageDraw.Draw(image)
 
-        self.font_large = ImageFont.truetype(UserFont, 80)
-        self.font = ImageFont.truetype(UserFont, 50)
-        self.font_medium = ImageFont.truetype(UserFont, 44)
-        self.font_small = ImageFont.truetype(UserFont, 28)
+        try:
+            from helpers import resource_path
+
+            UserFont = resource_path("Manrope-Bold.ttf")
+
+            print(UserFont)
+            self.font_large = ImageFont.truetype(UserFont, 80)
+            self.font = ImageFont.truetype(UserFont, 50)
+            self.font_medium = ImageFont.truetype(UserFont, 44)
+            self.font_small = ImageFont.truetype(UserFont, 28)
+        except:
+            from fonts.ttf import ManropeBold as UserFont
+
+            # from fontTools.ttLib import TTFont
+
+            print(UserFont)
+            self.font_large = ImageFont.truetype(UserFont, 80)
+            self.font = ImageFont.truetype(UserFont, 50)
+            self.font_medium = ImageFont.truetype(UserFont, 44)
+            self.font_small = ImageFont.truetype(UserFont, 28)
 
     @property
     def canvas_width(self):

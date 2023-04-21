@@ -1,5 +1,7 @@
 import serial
 import yaml
+import sys
+import os
 import glob
 from pydispatch import dispatcher
 from PyQt5.QtCore import pyqtSlot
@@ -46,22 +48,50 @@ def set_sensor_status(sensor, status, col):
         )
 
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def write_to_yaml(key, value):
     print("write to yaml", key, value)
+    path = resource_path("settings.yml")
     try:
-        with open("/home/pi/code/python/py-weather-station/settings.yml", "r+") as f:
-            # load the content
-            content = yaml.safe_load(f)
-            # append the new id to the existing list
-            content[key] = value
-            # reset the position in the file (it's at the end since we read the file)
-            f.seek(0)
-            # write the updated YAML to the file
-            yaml.dump(content, f, explicit_start=True, default_flow_style=False)
-            # throw away any (old) content of the file after the current position,
-            # which is at the end of the YAML we just wrote.
-            # since we added more content, it's unlikely that there is more content here,
-            # but not impossible!
-            f.truncate()
+        try:
+            with open(path, "r+") as f:
+                # load the content
+                content = yaml.safe_load(f)
+                # append the new id to the existing list
+                content[key] = value
+                # reset the position in the file (it's at the end since we read the file)
+                f.seek(0)
+                # write the updated YAML to the file
+                yaml.dump(content, f, explicit_start=True, default_flow_style=False)
+                # throw away any (old) content of the file after the current position,
+                # which is at the end of the YAML we just wrote.
+                # since we added more content, it's unlikely that there is more content here,
+                # but not impossible!
+                f.truncate()
+        except:
+            with open(
+                "/home/pi/code/python/py-weather-station/settings.yml", "r+"
+            ) as f:
+                # load the content
+                content = yaml.safe_load(f)
+                # append the new id to the existing list
+                content[key] = value
+                # reset the position in the file (it's at the end since we read the file)
+                f.seek(0)
+                # write the updated YAML to the file
+                yaml.dump(content, f, explicit_start=True, default_flow_style=False)
+                # throw away any (old) content of the file after the current position,
+                # which is at the end of the YAML we just wrote.
+                # since we added more content, it's unlikely that there is more content here,
+                # but not impossible!
+                f.truncate()
     except:
         print("error writing to yaml")

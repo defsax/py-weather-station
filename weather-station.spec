@@ -6,7 +6,7 @@ block_cipher = None
 
 a = Analysis(
     ['src/app.py'],
-    pathex=[],
+    pathex=['/home/pi/code/python/py-weather-station/'],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -20,6 +20,9 @@ a = Analysis(
     noarchive=False,
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+a.datas += [
+    ('Manrope-Bold.ttf','/home/pi/code/python/py-weather-station/resources/fonts/Manrope-Bold.ttf', "DATA"), 
+    ('settings.yml','/home/pi/code/python/py-weather-station/settings.yml', "DATA")]
 
 exe = EXE(
     pyz,

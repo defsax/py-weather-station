@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         # start full screen
-        # ~ self.showFullScreen()
+        self.showFullScreen()
 
         # ~ self.setFixedWidth(800)
         # ~ self.setFixedHeight(480)
