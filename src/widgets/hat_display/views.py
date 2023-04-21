@@ -1,6 +1,7 @@
 import math
 import weatherhat
 from PIL import Image, ImageDraw, ImageFont
+
 from fonts.ttf import ManropeBold as UserFont
 
 COLOR_WHITE = (255, 255, 255)
@@ -233,10 +234,11 @@ class MainView(SensorView):
                 else:
                     data = 0
 
-            if data < 100:
-                data = "{:0.1f}".format(data)
-            else:
-                data = "{:0.0f}".format(data)
+            if type(data) != str:
+                if data < 100:
+                    data = "{:0.1f}".format(data)
+                else:
+                    data = "{:0.0f}".format(data)
 
             self._draw.text(
                 (x + w + o_x, y + 20 + 32),  # Position is the right, center of the text
@@ -273,8 +275,25 @@ class MainView(SensorView):
         self.render_graphs()
 
     def render_graphs(self, graph_mode=False):
-        # ~ self.draw_info(0, 0, (20, 20, 220), "RAIN", self._data.rain_mm_sec.history(), "mm/s", vmax=self._settings.maximum_rain_mm, graph_mode=graph_mode)
-        # ~ self.draw_info(0, 150, (20, 20, 220), "PRES", self._data.pressure.history(), "hPa", graph_mode=graph_mode)
+        self.draw_info(
+            0,
+            0,
+            (20, 20, 220),
+            "VOLT",
+            self._data.battery_voltage.history(),
+            "V",
+            # vmax=self._settings.maximum_rain_mm,
+            graph_mode=graph_mode,
+        )
+        self.draw_info(
+            0,
+            150,
+            (20, 20, 220),
+            "WIND",
+            self._data.wind_speed.history(),
+            "m/s",
+            graph_mode=graph_mode,
+        )
         self.draw_info(
             0,
             300,
@@ -292,9 +311,9 @@ class MainView(SensorView):
             x,
             0,
             (220, 20, 220),
-            "WIND",
-            self._data.wind_speed.history(),
-            "m/s",
+            "LIGHT",
+            self._data.lux.history(),
+            "Wm^2",
             right=True,
             graph_mode=graph_mode,
         )
@@ -302,9 +321,9 @@ class MainView(SensorView):
             x,
             150,
             (220, 100, 20),
-            "LIGHT",
-            self._data.lux.history(),
-            "Wm^2",
+            "WIND",
+            self._data.wind_direction.history(),
+            "dir",
             right=True,
             graph_mode=graph_mode,
         )

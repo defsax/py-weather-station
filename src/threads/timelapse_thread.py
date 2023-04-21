@@ -21,12 +21,14 @@ class TimelapseThread(QThread):
         self.start_time = start.strftime("%m-%d-%Y_%H-%M-%S")
 
         # create file with mission id and date
-        self.file_name = "/test_" + self.start_time + ".csv"
+        self.file_name = "/" + self.mission_id + "_" + self.start_time + ".csv"
 
         # write defaults (csv)
         try:
             with open(self.path + self.file_name, "a") as f:
-                f.write("time,humidity,temperature,light,wind_speed,wind_dir\n")
+                f.write(
+                    "time,humidity,temperature,light,wind_speed,wind_dir,mission_id\n"
+                )
                 f.close()
         except:
             print("write setup error")
@@ -40,7 +42,7 @@ class TimelapseThread(QThread):
         # TODO: lock thread here just in case
 
         # log all data
-        light = str(round(self.sensor_manager.light_thread.wm2, 4))
+        light = str(round(self.sensor_manager.phidget_thread.wm2, 4))
         temperature = str(self.sensor_manager.t_rh_thread.temp)
         rh = str(self.sensor_manager.t_rh_thread.rh)
         wind_speed = str(round(self.sensor_manager.wind_speed, 4))
@@ -64,14 +66,15 @@ class TimelapseThread(QThread):
                 f.write(temperature + ",")
                 f.write(light + ",")
                 f.write(wind_speed + ",")
-                f.write(wind_dir)
+                f.write(wind_dir + ",")
+                f.write(self.mission_id)
                 f.write("\n")
                 f.close()
         except:
             print("write error")
 
     def run(self):
-        while not self.exit_flag.wait(timeout=5):
+        while not self.exit_flag.wait(timeout=60):
             # ~ self.check_sensor("args")
             self.log_data()
 

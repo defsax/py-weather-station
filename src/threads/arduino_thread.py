@@ -79,33 +79,24 @@ class ArduinoHandler(QWidget):
             try:
                 text = self.serial.readLine().data().decode()
                 text = text.rstrip("\r\n")
+
                 rh = float(text.split(",")[0])
                 self.rh = rh + self.rh_offset
-                # print(
-                #     "\nhumidity:",
-                #     text.split(",")[0],
-                #     "offset:",
-                #     self.rh_offset,
-                #     "humidity with offset:",
-                #     self.rh,
-                # )
+
                 temp = float(text.split(",")[1])
                 self.temp = temp + self.temp_offset
-                # print(
-                #     "temperature:",
-                #     text.split(",")[1],
-                #     "offset:",
-                #     self.temp_offset,
-                #     "temperature with offset:",
-                #     self.temp,
-                # )
+
                 # send values out
                 dispatcher.send(
                     signal="broadcast_serial",
-                    sender={"current_humidity": rh, "current_temperature": temp},
+                    sender={
+                        "current_humidity": rh,
+                        "current_temperature": temp,
+                        "offset_h": self.rh_offset,
+                        "offset_t": self.temp_offset,
+                    },
                 )
 
-                # print("serial.canreadline():", self.rh, self.temp)
             except UnicodeDecodeError:
                 print("UnicodeDecodeError")
             except:

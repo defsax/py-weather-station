@@ -7,8 +7,9 @@ class SensorData:
     def __init__(self, sensor_manager):
         self.sensor = sensor_manager
 
-        self.temperature = history.History()
+        self.battery_voltage = history.History()
 
+        self.temperature = history.History()
         self.pressure = history.History()
 
         self.humidity = history.History()
@@ -52,9 +53,15 @@ class SensorData:
         # ~ self.rain_total = self.sensor.rain_total
         # ~ else:
         # ~ self.rain_total = 0
-        self.lux.append(round(self.sensor.light_thread.wm2, 4))
+        self.lux.append(round(self.sensor.phidget_thread.wm2, 4))
         self.wind_speed.append(round(self.sensor.wind_speed, 4))
-        self.wind_direction.append(self.sensor.wind_dir)
+
+        # format for just first letters of wind direction
+        wd = [s[0] for s in self.sensor.wind_dir.split()]
+        d = "".join(wd)
+        self.wind_direction.append(d)
+
+        self.battery_voltage.append(self.sensor.phidget_thread.battery_voltage_reading)
 
         # ~ self.rain_mm_sec.append(self.sensor.rain)
 

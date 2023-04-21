@@ -1,14 +1,13 @@
 import time
-from pydispatch import dispatcher
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
-from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
+from PyQt5.QtSerialPort import QSerialPortInfo
 
-from threads.light_thread import LightThread
+from threads.phidget_thread import PhidgetThread
 from threads.weather_thread import WeatherThread
 from threads.arduino_thread import ArduinoHandler
 
-from helpers import get_t_rh_port, list_serial_devices, set_sensor_status
+from helpers import set_sensor_status
+from pydispatch import dispatcher
 
 
 class SensorManager(QThread):
@@ -21,7 +20,7 @@ class SensorManager(QThread):
         self.set_sensor_status.connect(set_sensor_status)
         # ~ port = get_t_rh_port()
 
-        self.light_thread = LightThread()
+        self.phidget_thread = PhidgetThread()
         self.weather_thread = WeatherThread()
         self.weather_thread.set_wind.connect(self.set_wind)
         self.t_rh_thread = ArduinoHandler()
@@ -32,7 +31,6 @@ class SensorManager(QThread):
         self.wind_dir = ""
 
         self.start()
-        # ~ self.sensors = []
 
     def check_temp_humidity(self):
         # port = list_serial_devices()
@@ -60,13 +58,13 @@ class SensorManager(QThread):
 
                 print("serial stopped")
 
-    def check_light(self):
-        if self.light_thread.is_attached == False:
+    def check_phidget(self):
+        if self.phidget_thread.is_attached == False:
             # ~ print("Light sensor disconnected. Trying to connect...")
             self.set_sensor_status.emit("light", "Disconnected", "red")
 
             try:
-                self.light_thread.light_sensor.openWaitForAttachment(1000)
+                self.phidget_thread.light_sensor.openWaitForAttachment(1000)
             except:
                 print("Unable to connect light sensor...")
         else:
@@ -93,11 +91,16 @@ class SensorManager(QThread):
     def set_wind(self, direction, speed):
         self.wind_speed = speed
         self.wind_dir = direction
+        # send values out
+        dispatcher.send(
+            signal="broadcast_wind",
+            sender={"wind_speed": self.wind_speed, "wind_dir": self.wind_dir},
+        )
 
     def run(self):
         while True:
             # ~ print("Checking for sensors...")
             self.check_temp_humidity()
-            self.check_light()
+            self.check_phidget()
             # ~ self.check_wind()
             time.sleep(5)
