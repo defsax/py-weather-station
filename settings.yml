@@ -6,4 +6,6 @@ mission_ids:
 - FY
 - ag
 - agr
+- wednesday-night
+- window-height-test
 temperature_offset: -0.75

@@ -22,7 +22,7 @@ class DisplayThread(QThread):
         self.FPS = 10
 
         self.display = ST7789.ST7789(
-            rotation=180,
+            rotation=0,
             port=0,
             cs=1,
             dc=9,
