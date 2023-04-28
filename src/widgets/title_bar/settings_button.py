@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QStyle
-
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QIcon
 from pydispatch import dispatcher
-from helpers import write_to_yaml
+from helpers import write_to_yaml, resource_path
 
 
 class SettingsButton(QWidget):
@@ -11,13 +12,21 @@ class SettingsButton(QWidget):
         self.main_view = main_view
         self.settings_view = settings_view
 
-        pixmapi = getattr(QStyle, "SP_FileIcon")
-        icon = self.style().standardIcon(pixmapi)
+        # path = resource_path("settings-icon.png")
+        # pixmapi = getattr(QStyle, "SP_FileIcon")
+        # icon = self.style().standardIcon(pixmapi)
 
         self.button = QPushButton("", self)
         self.button.clicked.connect(self.handleButton)
-        # ~ self.button.setIconSize(QtCore.QSize(20,20))
-        self.button.setIcon(icon)
+        self.button.setIconSize(QSize(25, 25))
+        try:
+            path = "/home/pi/code/python/py-weather-station/resources/icons/settings-icon.png"
+            self.button.setIcon(QIcon(path))
+            print("literal path")
+        except:
+            path = resource_path("settings-icon.png")
+            self.button.setIcon(QIcon(path))
+            print("resource path")
 
         layout = QHBoxLayout()
         layout.addWidget(self.button)

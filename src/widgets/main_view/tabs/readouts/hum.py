@@ -33,9 +33,9 @@ class HumidityDisplay(QWidget):
         )
 
     def update_values(self, sender):
-        rh = str(round(sender["current_humidity"] + sender["offset_h"], 1))
+        rh = round(sender["current_humidity"] + sender["offset_h"], 1)
 
         if rh > 99:
             self.status_humidity.setText("N/A")
         else:
-            self.status_humidity.setText("rh")
+            self.status_humidity.setText(str(rh))
