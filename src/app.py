@@ -17,12 +17,13 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        # start full screen
-        self.showFullScreen()
-
         # ~ self.setFixedWidth(800)
         # ~ self.setFixedHeight(480)
-        self.setGeometry(100, 100, 480, 800)
+        # self.setGeometry(100, 100, 480, 800)
+        self.setFixedSize(480, 800)
+
+        # start full screen
+        self.showFullScreen()
 
         self.setup_threads()
         self.setup_widgets()

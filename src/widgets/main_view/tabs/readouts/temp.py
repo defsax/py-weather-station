@@ -34,4 +34,7 @@ class TemperatureDisplay(QWidget):
 
     def update_values(self, sender):
         t = str(round(sender["current_temperature"] + sender["offset_t"], 1))
-        self.status_temperature.setText(t)
+        if t > 99:
+            self.status_temperature.setText("N/A")
+        else:
+            self.status_temperature.setText(t)

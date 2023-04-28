@@ -12,35 +12,9 @@ class DataDisplay(QWidget):
     def __init__(self):
         super(DataDisplay, self).__init__()
 
-        # layout = QVBoxLayout()
-        # self.setLayout(layout)
-        # layout.setContentsMargins(0, 0, 0, 0)
-
-        # row_one = QHBoxLayout()
-        # row_one.addWidget(VoltageDisplay())
-        # row_one.addWidget(LightDisplay())
-        # row_one_widget = QWidget()
-        # row_one_widget.setLayout(row_one)
-
-        # row_two = QHBoxLayout()
-        # row_two.addWidget(WindSpeedDisplay())
-        # row_two.addWidget(WindDirDisplay())
-        # row_two_widget = QWidget()
-        # row_two_widget.setLayout(row_two)
-
-        # row_three = QHBoxLayout()
-        # row_three.addWidget(TemperatureDisplay())
-        # row_three.addWidget(HumidityDisplay())
-        # row_three_widget = QWidget()
-        # row_three_widget.setLayout(row_three)
-
-        # layout.addWidget(row_one_widget)
-        # layout.addWidget(row_two_widget)
-        # layout.addWidget(row_three_widget)
-
         grid_layout = QGridLayout()
         self.setLayout(grid_layout)
-        grid_layout.setContentsMargins(0, 0, 0, 0)
+        grid_layout.setContentsMargins(10, 0, 10, 0)
 
         grid_layout.addWidget(VoltageDisplay(), 0, 0)
         grid_layout.addWidget(LightDisplay(), 0, 1)

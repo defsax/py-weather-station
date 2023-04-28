@@ -25,7 +25,3 @@ class LiveTabs(QWidget):
         self.setLayout(self.layout)
 
         self.tabs.addTab(DataDisplay(), "Data")
-
-    # ~ def add_cams_to_tabs(self, cameras):
-    # ~ for i, cam in enumerate(cameras):
-    # ~ self.tabs.addTab(cam, self.check_icon, "Camera {}".format(i+1))
