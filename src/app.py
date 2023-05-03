@@ -102,7 +102,7 @@ class MainWindow(QMainWindow):
 
     def handle_shutdown(self, sender):
         print(sender, "shutdown!!!")
-        # os.system('systemctl poweroff')
+        os.system("systemctl poweroff")
 
 
 app = QApplication(sys.argv)
