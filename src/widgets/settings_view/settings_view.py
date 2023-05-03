@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 from widgets.settings_view.temp_slider import TempSlider
 from widgets.settings_view.hum_slider import HumSlider
 from widgets.settings_view.id_manager.id_manager import IdManager
+from widgets.settings_view.shutdown_button import ShutdownButton
 
 
 class SettingsView(QMainWindow):
@@ -25,6 +26,7 @@ class SettingsView(QMainWindow):
         self.overall_layout.addWidget(self.temp_slider)
         self.overall_layout.addWidget(self.hum_slider)
         self.overall_layout.addWidget(self.id_manager)
+        self.overall_layout.addWidget(self.shutdown_button)
 
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -47,3 +49,4 @@ class SettingsView(QMainWindow):
         self.temp_slider = TempSlider(self.config["temperature_offset"])
         self.hum_slider = HumSlider(self.config["humidity_offset"])
         self.id_manager = IdManager()
+        self.shutdown_button = ShutdownButton()

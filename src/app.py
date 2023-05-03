@@ -1,3 +1,4 @@
+import os
 import sys
 from pydispatch import dispatcher
 
@@ -31,6 +32,9 @@ class MainWindow(QMainWindow):
 
         dispatcher.connect(
             self.toggle_timelapse, signal="toggle_logging", sender=dispatcher.Any
+        )
+        dispatcher.connect(
+            self.handle_shutdown, signal="shutdown_signal", sender=dispatcher.Any
         )
 
     def __del__(self):
@@ -95,6 +99,10 @@ class MainWindow(QMainWindow):
             self.showNormal()
         else:
             self.showFullScreen()
+
+    def handle_shutdown(self, sender):
+        print(sender, "shutdown!!!")
+        # os.system('systemctl poweroff')
 
 
 app = QApplication(sys.argv)
