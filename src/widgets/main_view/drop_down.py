@@ -2,6 +2,8 @@ import yaml
 from pydispatch import dispatcher
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QComboBox
 
+from helpers import resource_path
+
 
 class DropDown(QWidget):
     def __init__(self):
@@ -37,9 +39,11 @@ class DropDown(QWidget):
 
     def load_mission_ids(self, list=None):
         if list == None:
-            self.config = yaml.safe_load(
-                open("/home/pi/code/python/py-weather-station/settings.yml")
-            )
+            try:
+                path = resource_path("settings.yml")
+                self.config = yaml.safe_load(open(path))
+            except:
+                print("Error loading settings for mission ids.")
             for i, item in enumerate(self.config["mission_ids"]):
                 self.combobox.addItem(item)
         else:

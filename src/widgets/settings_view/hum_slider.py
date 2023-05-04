@@ -1,5 +1,13 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSlider,
+    QLabel,
+    QProxyStyle,
+    QStyle,
+)
 
 from pydispatch import dispatcher
 
@@ -32,7 +40,16 @@ class HumSlider(QWidget):
         self.slider.setTickPosition(QSlider.TicksAbove)
         self.slider.valueChanged.connect(self.update)
 
+        # with open("slider_style.qss", "r") as f:
+        #     try:
+        #         QSS = f.read()
+        #     except:
+        #         print("Trouble reading stylesheet")
+        #         self.slider.setStyleSheet(QSS)
+
         horizontal_layout = QHBoxLayout()
+        horizontal_layout.setContentsMargins(0, 0, 0, 0)
+
         widget = QWidget()
         widget.setLayout(horizontal_layout)
         horizontal_layout.addWidget(self.label)

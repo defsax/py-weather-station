@@ -1,5 +1,3 @@
-import math
-import weatherhat
 from weatherhat import history
 
 
@@ -37,7 +35,6 @@ class SensorData:
 
     def update(self, interval=5.0):
         self.sensor.temperature_offset = self.OFFSET
-        # ~ self.sensor.update(interval)
         try:
             self.sensor.t_rh_thread
 
@@ -46,13 +43,7 @@ class SensorData:
 
         except:
             print("temp rh sensor thread disconnected")
-            # self.temperature.append(self.sensor.t_rh_thread.temp)
-            # self.relative_humidity.append(self.sensor.t_rh_thread.rh)
 
-        # ~ if self.sensor.updated_wind_rain:
-        # ~ self.rain_total = self.sensor.rain_total
-        # ~ else:
-        # ~ self.rain_total = 0
         self.lux.append(round(self.sensor.phidget_thread.wm2, 4))
         self.wind_speed.append(round(self.sensor.wind_speed, 4))
 
@@ -62,9 +53,3 @@ class SensorData:
         self.wind_direction.append(d)
 
         self.battery_voltage.append(self.sensor.phidget_thread.battery_voltage_reading)
-
-        # ~ self.rain_mm_sec.append(self.sensor.rain)
-
-        # ~ self.needle = math.radians(self.wind_direction.average(self.WIND_DIRECTION_AVERAGE_SAMPLES))
-        # ~ self.needle_trail.append(self.needle)
-        # ~ self.needle_trail = self.needle_trail[-self.COMPASS_TRAIL_SIZE:]

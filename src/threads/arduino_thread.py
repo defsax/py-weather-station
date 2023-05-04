@@ -1,17 +1,18 @@
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import QThread, pyqtSlot, QIODevice
+from PyQt5.QtCore import pyqtSlot, QIODevice
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 import yaml
 from pydispatch import dispatcher
+from helpers import resource_path
 
 
 class ArduinoHandler(QWidget):
     def __init__(self):
         super(ArduinoHandler, self).__init__()
+
         try:
-            self.config = yaml.safe_load(
-                open("/home/pi/code/python/py-weather-station/settings.yml")
-            )
+            path = resource_path("settings.yml")
+            self.config = yaml.safe_load(open(path))
         except:
             print("Error reading settings.yml")
 

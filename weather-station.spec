@@ -23,7 +23,7 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 a.datas += [
     ('Manrope-Bold.ttf','/home/pi/code/python/py-weather-station/resources/fonts/Manrope-Bold.ttf', "DATA"), 
     ('settings-icon.png','/home/pi/code/python/py-weather-station/icons/settings-icon.png', "DATA"),
-    ('settings.yml','/home/pi/code/python/py-weather-station/settings.yml', "DATA")]
+    ('settings.yml','/home/pi/code/python/py-weather-station/src/settings.yml', "DATA")]
 
 exe = EXE(
     pyz,

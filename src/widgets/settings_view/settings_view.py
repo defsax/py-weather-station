@@ -1,14 +1,11 @@
 import yaml
-from PyQt5.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-)
+from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout
 from widgets.settings_view.temp_slider import TempSlider
 from widgets.settings_view.hum_slider import HumSlider
 from widgets.settings_view.id_manager.id_manager import IdManager
 from widgets.settings_view.shutdown_button import ShutdownButton
+
+from helpers import resource_path
 
 
 class SettingsView(QMainWindow):
@@ -28,8 +25,8 @@ class SettingsView(QMainWindow):
         self.overall_layout.addWidget(self.id_manager)
         self.overall_layout.addWidget(self.shutdown_button)
 
-        layout = QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        # layout = QHBoxLayout()
+        # layout.setContentsMargins(0, 0, 0, 0)
 
         # dummy widget to hold layout, layout holds actual widgets
         widget = QWidget()
@@ -40,9 +37,8 @@ class SettingsView(QMainWindow):
 
     def setup_widgets(self):
         try:
-            self.config = yaml.safe_load(
-                open("/home/pi/code/python/py-weather-station/settings.yml")
-            )
+            path = resource_path("settings.yml")
+            self.config = yaml.safe_load(open(path))
         except:
             print("Error reading settings.yml")
 

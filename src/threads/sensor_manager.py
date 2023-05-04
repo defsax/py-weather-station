@@ -75,14 +75,8 @@ class SensorManager(QThread):
         wind_direction_cardinal = self.weather_thread.sensors.degrees_to_cardinal(
             self.weather_thread.sensors.wind_direction
         )
-        # ~ print("wind dir: ", wind_direction_cardinal)
-        # ~ print("wind dir: ", self.weather_thread.sensors.wind_direction)
-        # ~ print("wind speed: ", self.weather_thread.sensors.wind_speed)
-        # ~ print("temperature: ", self.weather_thread.sensors.temperature)
 
         if self.weather_thread.sensors.updated_wind_rain:
-            # ~ print(self.weather_thread.sensors.wind_direction)
-            # ~ print(self.weather_thread.sensors.wind_speed)
             print("wind sensors updated")
             self.wind_speed = self.weather_thread.sensors.wind_speed
             self.wind_dir = wind_direction_cardinal

@@ -51,8 +51,12 @@ def set_sensor_status(sensor, status, col):
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
+        print("sys._MEIPASS", base_path)
     except Exception:
-        base_path = os.path.abspath(".")
+        # base_path = os.path.abspath(".")
+        # print('os.path.abspath(".")', base_path)
+        print("path.dirname(__file__)", os.path.dirname(__file__))
+        base_path = os.path.dirname(__file__)
 
     return os.path.join(base_path, relative_path)
 
@@ -60,6 +64,7 @@ def resource_path(relative_path):
 def write_to_yaml(key, value):
     print("write to yaml", key, value)
     path = resource_path("settings.yml")
+    print(path)
     try:
         try:
             with open(path, "r+") as f:

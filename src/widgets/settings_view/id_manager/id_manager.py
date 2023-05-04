@@ -5,10 +5,11 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QListWidget,
     QAbstractItemView,
-    QListWidgetItem,
     QLabel,
 )
 from widgets.settings_view.id_manager.buttons import ButtonsWidget
+
+from helpers import resource_path
 
 
 class IdManager(QWidget):
@@ -36,9 +37,11 @@ class IdManager(QWidget):
 
         self.add_remove_buttons = ButtonsWidget(self)
 
-        self.config = yaml.safe_load(
-            open("/home/pi/code/python/py-weather-station/settings.yml")
-        )
+        try:
+            path = resource_path("settings.yml")
+            self.config = yaml.safe_load(open(path))
+        except:
+            print("Error reading settings.yml")
         for i, item in enumerate(self.config["mission_ids"]):
             self.id_area.addItem(item)
 

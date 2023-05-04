@@ -49,7 +49,12 @@ class PhidgetThread(QWidget):
     def onLightVoltageChange(self, phidget_handle, voltage):
         self.light_voltage_reading = voltage
         self.wm2 = 0.4 * voltage * 1000
-        # print("Voltage: " + str(self.voltage) + "\t\tW m^2: " + str(self.wm2))
+        # print(
+        #     "Voltage: "
+        #     + str(self.light_voltage_reading)
+        #     + "\t\tW m^2: "
+        #     + str(self.wm2)
+        # )
 
         # send values out
         dispatcher.send(
