@@ -1,4 +1,5 @@
 import time
+import statistics
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtSerialPort import QSerialPortInfo
 
@@ -28,6 +29,7 @@ class SensorManager(QThread):
         self.stop_sensor.connect(self.t_rh_thread.stop_serial)
 
         self.wind_speed = 0
+        self.wind_speed_history = []
         self.wind_dir = ""
 
         self.start()
@@ -84,12 +86,22 @@ class SensorManager(QThread):
     @pyqtSlot(str, float)
     def set_wind(self, direction, speed):
         self.wind_speed = speed
+        self.wind_speed_history.append(self.wind_speed)
         self.wind_dir = direction
+
         # send values out
         dispatcher.send(
             signal="broadcast_wind",
             sender={"wind_speed": self.wind_speed, "wind_dir": self.wind_dir},
         )
+
+    def getAverageSpeed(self):
+        average = statistics.fmean(self.wind_speed_history)
+        self.wind_speed_history = []
+        return average
+
+    def clearAverages(self):
+        self.wind_speed_history = []
 
     def run(self):
         while True:

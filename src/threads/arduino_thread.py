@@ -1,7 +1,10 @@
+import statistics
+import yaml
+
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSlot, QIODevice
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-import yaml
+
 from pydispatch import dispatcher
 from helpers import resource_path
 
@@ -18,8 +21,11 @@ class ArduinoHandler(QWidget):
 
         self.temp_offset = self.config["temperature_offset"]
         self.temp = 0
+        self.temp_history = []
+
         self.rh_offset = self.config["humidity_offset"]
         self.rh = 0
+        self.rh_history = []
 
         self.port = None
         self.serial = None
@@ -83,9 +89,11 @@ class ArduinoHandler(QWidget):
 
                 rh = float(text.split(",")[0])
                 self.rh = rh + self.rh_offset
+                self.rh_history.append(self.rh)
 
                 temp = float(text.split(",")[1])
                 self.temp = temp + self.temp_offset
+                self.temp_history.append(self.temp)
 
                 # send values out
                 dispatcher.send(
@@ -102,3 +110,17 @@ class ArduinoHandler(QWidget):
                 print("UnicodeDecodeError")
             except:
                 print("Other error")
+
+    def getAverageRH(self):
+        average = statistics.fmean(self.rh_history)
+        self.rh_history = []
+        return average
+
+    def getAverageTemp(self):
+        average = statistics.fmean(self.temp_history)
+        self.temp_history = []
+        return average
+
+    def clearAverages(self):
+        self.temp_history = []
+        self.rh_history = []

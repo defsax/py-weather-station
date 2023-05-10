@@ -27,7 +27,7 @@ class TimelapseThread(QThread):
         try:
             with open(self.path + self.file_name, "a") as f:
                 f.write(
-                    "time,humidity,temperature,light,wind_speed,wind_dir,mission_id\n"
+                    "time,humidity,temperature,light,wind_speed,wind_dir,mission_id,voltage\n"
                 )
                 f.close()
         except:
@@ -42,19 +42,25 @@ class TimelapseThread(QThread):
         # TODO: lock thread here just in case
 
         # log all data
-        light = str(round(self.sensor_manager.phidget_thread.wm2, 4))
-        temperature = str(self.sensor_manager.t_rh_thread.temp)
-        rh = str(self.sensor_manager.t_rh_thread.rh)
-        wind_speed = str(round(self.sensor_manager.wind_speed, 4))
+        voltage = str(self.sensor_manager.phidget_thread.battery_voltage_reading)
+        # light = str(round(self.sensor_manager.phidget_thread.wm2, 4))
+        light_average = str(self.sensor_manager.phidget_thread.getAverageLight())
+        # temperature = str(self.sensor_manager.t_rh_thread.temp)
+        # rh = str(self.sensor_manager.t_rh_thread.rh)
+        temp_average = str(self.sensor_manager.t_rh_thread.getAverageTemp())
+        rh_average = str(self.sensor_manager.t_rh_thread.getAverageRH())
+        # wind_speed = str(round(self.sensor_manager.wind_speed, 4))
+        wind_speed_average = str(self.sensor_manager.getAverageSpeed())
         wind_dir = str(self.sensor_manager.wind_dir)
 
         print("\n\nlogging:\n")
-        print("light:", light)
-        print("temperature:", temperature)
-        print("rh:", rh)
-        print("wind speed:", wind_speed)
+        print("light:", light_average)
+        print("temperature:", temp_average)
+        print("rh:", rh_average)
+        print("wind speed:", wind_speed_average)
         print("wind direction:", wind_dir)
         print("name:", self.mission_id)
+        print("voltage:", voltage)
         print("\n")
 
         try:
@@ -62,12 +68,13 @@ class TimelapseThread(QThread):
             date_time = t.strftime("%m-%d-%Y_%H-%M-%S")
             with open(self.path + self.file_name, "a") as f:
                 f.write(date_time + ",")
-                f.write(rh + ",")
-                f.write(temperature + ",")
-                f.write(light + ",")
-                f.write(wind_speed + ",")
+                f.write(rh_average + ",")
+                f.write(temp_average + ",")
+                f.write(light_average + ",")
+                f.write(wind_speed_average + ",")
                 f.write(wind_dir + ",")
-                f.write(self.mission_id)
+                f.write(self.mission_id + ",")
+                f.write(voltage)
                 f.write("\n")
                 f.close()
         except:
@@ -80,4 +87,6 @@ class TimelapseThread(QThread):
 
     def stop(self):
         print("Timelapse thread stopping...")
+        self.sensor_manager.phidget_thread.clearAverages()
+        self.sensor_manager.arduino_thread.clearAverages()
         self.exit_flag.set()
