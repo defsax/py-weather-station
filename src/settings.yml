@@ -8,4 +8,5 @@ mission_ids:
 - agr
 - wednesday-night
 - window-height-test
+- spec test
 temperature_offset: -0.75

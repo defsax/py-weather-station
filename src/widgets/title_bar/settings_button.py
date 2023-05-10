@@ -12,10 +12,6 @@ class SettingsButton(QWidget):
         self.main_view = main_view
         self.settings_view = settings_view
 
-        # path = resource_path("settings-icon.png")
-        # pixmapi = getattr(QStyle, "SP_FileIcon")
-        # icon = self.style().standardIcon(pixmapi)
-
         self.button = QPushButton("", self)
         self.button.clicked.connect(self.handleButton)
         self.button.setIconSize(QSize(25, 25))
