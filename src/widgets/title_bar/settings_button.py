@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QStyle
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 from pydispatch import dispatcher

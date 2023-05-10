@@ -1,7 +1,8 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QFile, QIODevice, QTextStream
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
 
 from pydispatch import dispatcher
+from helpers import resource_path
 
 
 class TempSlider(QWidget):
@@ -9,7 +10,7 @@ class TempSlider(QWidget):
         super(TempSlider, self).__init__()
 
         layout = QVBoxLayout()
-        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setContentsMargins(10, 0, 10, 0)
         self.setLayout(layout)
 
         self.offset = offset
@@ -32,7 +33,24 @@ class TempSlider(QWidget):
         self.slider.setTickPosition(QSlider.TicksAbove)
         self.slider.valueChanged.connect(self.update)
 
+        # load style for slider
+        try:
+            path = "/home/pi/code/python/py-weather-station/src/widgets/settings_view/slider_style.qss"
+            print("literal path")
+        except:
+            path = resource_path("slider_style.qss")
+            print("resource path")
+
+        try:
+            stream = QFile(path)
+            stream.open(QIODevice.ReadOnly)
+            self.slider.setStyleSheet(QTextStream(stream).readAll())
+        except:
+            print("issue loading qss")
+
         horizontal_layout = QHBoxLayout()
+        horizontal_layout.setContentsMargins(0, 0, 0, 0)
+
         widget = QWidget()
         widget.setLayout(horizontal_layout)
         horizontal_layout.addWidget(self.label)
@@ -57,7 +75,6 @@ class TempSlider(QWidget):
 
     def update(self, value):
         self.offset = float(value) / 4
-        print(value, self.offset)
 
         format_string = "<font>Temperature Offset: {0}</font>"
         self.label.setText(format_string.format(self.offset))

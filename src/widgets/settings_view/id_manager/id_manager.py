@@ -17,7 +17,7 @@ class IdManager(QWidget):
         super(IdManager, self).__init__()
 
         layout = QVBoxLayout()
-        layout.setContentsMargins(10, 10, 10, 10)
+        layout.setContentsMargins(10, 0, 10, 10)
         self.setLayout(layout)
 
         self.mission_id_label = QLabel("Mission IDs:")
