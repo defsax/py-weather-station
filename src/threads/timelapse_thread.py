@@ -43,25 +43,11 @@ class TimelapseThread(QThread):
 
         # log all data
         voltage = str(self.sensor_manager.phidget_thread.battery_voltage_reading)
-        # light = str(round(self.sensor_manager.phidget_thread.wm2, 4))
         light_average = str(self.sensor_manager.phidget_thread.getAverageLight())
-        # temperature = str(self.sensor_manager.t_rh_thread.temp)
-        # rh = str(self.sensor_manager.t_rh_thread.rh)
         temp_average = str(self.sensor_manager.t_rh_thread.getAverageTemp())
         rh_average = str(self.sensor_manager.t_rh_thread.getAverageRH())
-        # wind_speed = str(round(self.sensor_manager.wind_speed, 4))
         wind_speed_average = str(self.sensor_manager.getAverageSpeed())
         wind_dir = str(self.sensor_manager.wind_dir)
-
-        print("\n\nlogging:\n")
-        print("light:", light_average)
-        print("temperature:", temp_average)
-        print("rh:", rh_average)
-        print("wind speed:", wind_speed_average)
-        print("wind direction:", wind_dir)
-        print("name:", self.mission_id)
-        print("voltage:", voltage)
-        print("\n")
 
         try:
             t = datetime.now()
@@ -88,5 +74,6 @@ class TimelapseThread(QThread):
     def stop(self):
         print("Timelapse thread stopping...")
         self.sensor_manager.phidget_thread.clearAverages()
-        self.sensor_manager.arduino_thread.clearAverages()
+        self.sensor_manager.t_rh_thread.clearAverages()
+        self.sensor_manager.clearAverages()
         self.exit_flag.set()

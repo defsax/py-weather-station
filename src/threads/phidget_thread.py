@@ -62,9 +62,7 @@ class PhidgetThread(QWidget):
 
     def getAverageLight(self):
         average = statistics.fmean(self.wm2_history)
-        print("light average:", average)
         self.wm2_history = []
-        print("light array (should be []):", self.wm2_history)
         return average
 
     def onBatteryVoltageChange(self, phidget_handle, voltage):

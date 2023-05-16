@@ -22,7 +22,6 @@ class View:
 
             UserFont = resource_path("Manrope-Bold.ttf")
 
-            print(UserFont)
             self.font_large = ImageFont.truetype(UserFont, 80)
             self.font = ImageFont.truetype(UserFont, 50)
             self.font_medium = ImageFont.truetype(UserFont, 44)
@@ -32,7 +31,6 @@ class View:
 
             # from fontTools.ttLib import TTFont
 
-            print(UserFont)
             self.font_large = ImageFont.truetype(UserFont, 80)
             self.font = ImageFont.truetype(UserFont, 50)
             self.font_medium = ImageFont.truetype(UserFont, 44)

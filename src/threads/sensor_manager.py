@@ -54,6 +54,16 @@ class SensorManager(QThread):
             # print("Temperature/RH sensor disconnected.")
             self.set_sensor_status.emit("temp_rh", "Disconnected", "red")
 
+            dispatcher.send(
+                signal="broadcast_serial",
+                sender={
+                    "current_humidity": 0.0,
+                    "current_temperature": 0.0,
+                    "offset_h": 0.0,
+                    "offset_t": 0.0,
+                },
+            )
+
             # close serial port if not already closed
             if self.t_rh_thread.serial != None:
                 self.stop_sensor.emit()
@@ -96,8 +106,10 @@ class SensorManager(QThread):
         )
 
     def getAverageSpeed(self):
+        print("wind speed history:", self.wind_speed_history)
         average = statistics.fmean(self.wind_speed_history)
         self.wind_speed_history = []
+        print("wind speed average:", average)
         return average
 
     def clearAverages(self):

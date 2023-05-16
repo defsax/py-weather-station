@@ -1,5 +1,5 @@
 ---
-humidity_offset: 1.0
+humidity_offset: -2.25
 mission_ids:
 - Test
 - NFT

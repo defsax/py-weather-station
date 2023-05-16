@@ -14,7 +14,6 @@ class TempSlider(QWidget):
         self.setLayout(layout)
 
         self.offset = offset
-        print(self.offset, type(self.offset))
         self.current_temperature = 0
 
         self.label = QLabel("Temperature Offset: " + str(self.offset))
@@ -36,10 +35,9 @@ class TempSlider(QWidget):
         # load style for slider
         try:
             path = "/home/pi/code/python/py-weather-station/src/widgets/settings_view/slider_style.qss"
-            print("literal path")
+
         except:
             path = resource_path("slider_style.qss")
-            print("resource path")
 
         try:
             stream = QFile(path)

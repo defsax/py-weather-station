@@ -112,11 +112,19 @@ class ArduinoHandler(QWidget):
                 print("Other error")
 
     def getAverageRH(self):
+        print(self.rh_history)
+        if not self.rh_history:
+            return 0.0
+
         average = statistics.fmean(self.rh_history)
         self.rh_history = []
         return average
 
     def getAverageTemp(self):
+        print(self.temp_history)
+        if not self.temp_history:
+            return 0.0
+
         average = statistics.fmean(self.temp_history)
         self.temp_history = []
         return average

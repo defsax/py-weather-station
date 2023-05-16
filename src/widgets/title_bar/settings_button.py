@@ -18,11 +18,10 @@ class SettingsButton(QWidget):
         try:
             path = "/home/pi/code/python/py-weather-station/resources/icons/settings-icon.png"
             self.button.setIcon(QIcon(path))
-            print("literal path")
+
         except:
             path = resource_path("settings-icon.png")
             self.button.setIcon(QIcon(path))
-            print("resource path")
 
         layout = QHBoxLayout()
         layout.addWidget(self.button)
