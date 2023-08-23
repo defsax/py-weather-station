@@ -1,4 +1,6 @@
 import os
+
+from distutils.dir_util import copy_tree
 import sys
 from pydispatch import dispatcher
 
@@ -12,6 +14,9 @@ from widgets.hat_display.display_thread import DisplayThread
 from threads.timelapse_thread import TimelapseThread
 from threads.server import ServerThread
 from threads.sensor_manager import SensorManager
+
+from pyudev.pyqt5 import MonitorObserver
+from pyudev import Context, Monitor
 
 
 class MainWindow(QMainWindow):
@@ -36,6 +41,52 @@ class MainWindow(QMainWindow):
         dispatcher.connect(
             self.handle_shutdown, signal="shutdown_signal", sender=dispatcher.Any
         )
+        dispatcher.connect(
+            self.copy_files, signal="output_files_signal", sender=dispatcher.Any
+        )
+
+        #####
+        context = Context()
+        monitor = Monitor.from_netlink(context)
+        monitor.filter_by(subsystem="block", device_type="partition")
+        self.observer = MonitorObserver(monitor)
+        self.observer.deviceEvent.connect(self.device_connected)
+        monitor.start()
+
+    def device_connected(self, device):
+        # self.textBrowser.append(device.sys_name)
+        # print("Test")
+        # print("device node", device.device_node)
+        # print("device type", device.device_type)
+        # p = self.find_mount_point(device.device_node)
+        # print(p)
+        # print("device path", device.device_path)
+        # print("device sys_name", device.sys_name)
+        # print("device sys_path", device.sys_path)
+
+        # print(next(os.walk("/media/pi"))[1])
+        dirs = next(os.walk("/media/pi"))[1]
+        if dirs:
+            print(dirs)
+            new_path = os.path.join("/media/pi", dirs[0])
+            print(new_path)
+            self.usb_path = new_path
+
+        # for root, dirs, files in os.walk("/media/pi"):
+        #     print("root", root)
+        #     print("dirs", dirs)
+        #     print("files", files)
+        # print(root, "consumes")
+        # print(sum(os.path.getsize(os.path.join(root, name)) for name in files))
+        # print("bytes in", len(files), "non-directory files")
+
+    # def find_mount_point(self, path):
+    #     path = os.path.abspath(path)
+    #     while not os.path.ismount(path):
+    #         path = os.path.dirname(path)
+    #     return path
+
+    ######
 
     def __del__(self):
         print("\nApp unwind.")
@@ -99,6 +150,19 @@ class MainWindow(QMainWindow):
             self.showNormal()
         else:
             self.showFullScreen()
+
+    def copy_files(self):
+        new_path = self.usb_path + "/weather_station_data/"
+        if not os.path.exists(new_path):
+            print(self.usb_path + "/weather_station_data/ does not exist. Creating...")
+            os.makedirs(new_path)
+
+        copy_tree("/home/pi/weather_station_data/", new_path)
+        print("DONE")
+        # 2nd option
+        # shutil.copy2(
+        #     "/home/pi/weather_station_data/", self.usb_path
+        #     )  # dst can be a folder; use shutil.copy2() to preserve timestamp
 
     def handle_shutdown(self, sender):
         print(sender, "shutdown!!!")

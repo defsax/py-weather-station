@@ -20,7 +20,7 @@ class WeatherThread(QThread):
                     self.sensors.wind_direction
                 )
                 wind_speed = self.sensors.wind_speed
-                print("wind_speed:", wind_speed, "wind dir:", wind_direction_cardinal)
+
                 self.set_wind.emit(wind_direction_cardinal, wind_speed)
                 if wind_speed == 0.0 and wind_direction_cardinal[0] == "E":
                     self.sensors.reset_counts()

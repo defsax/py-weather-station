@@ -1,4 +1,4 @@
-# from pydispatch import dispatcher
+from pydispatch import dispatcher
 
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QDialogButtonBox, QDialog
 from helpers import delete_files
@@ -16,15 +16,9 @@ class Dialog(QDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 
-        self.layout = QVBoxLayout()
-
-        # s1, s2, s3 = 'Python', 'String', 'Concatenation'
-        # s = f'{s1} {s2} {s3}'
-        # if command == "output":
         message = QLabel(f"Are you sure you want to {command} all data?")
-        # else:
-        #     message = QLabel("Are you sure you want to shut down?")
 
+        self.layout = QVBoxLayout()
         self.layout.addWidget(message)
         self.layout.addWidget(self.buttonBox)
         self.setLayout(self.layout)
@@ -34,15 +28,15 @@ class Dialog(QDialog):
         print("yes")
         if self.command == "output":
             print("outputting to usb...")
+            # send output signal out
+            dispatcher.send(
+                signal="output_files_signal",
+                sender="output",
+            )
+
         else:
             print("deleting all data...")
             delete_files("/home/pi/weather_station_data/*")
-
-        # send shutdown signal out
-        # dispatcher.send(
-        #     signal="shutdown_signal",
-        #     sender="shutdown",
-        # )
 
     def reject(self):
         print("no")
