@@ -83,8 +83,8 @@ def write_to_yaml(key, value):
         print("error writing to yaml")
 
 
-def delete_files():
-    files = glob.glob("/home/pi/weather_station_data/*")
+def delete_files(loc):
+    files = glob.glob(loc)
     for f in files:
-        print("Removing ", f, "...")
+        print("Removing", f, "...")
         os.remove(f)

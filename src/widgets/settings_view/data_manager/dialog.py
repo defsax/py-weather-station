@@ -36,7 +36,7 @@ class Dialog(QDialog):
             print("outputting to usb...")
         else:
             print("deleting all data...")
-            delete_files()
+            delete_files("/home/pi/weather_station_data/*")
 
         # send shutdown signal out
         # dispatcher.send(
