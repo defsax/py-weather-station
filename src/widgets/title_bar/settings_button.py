@@ -45,16 +45,21 @@ class SettingsButton(QWidget):
             self.main_view.content.options.drop_down.load_mission_ids(mission_ids)
 
             # save settings to yaml
-            write_to_yaml("humidity_offset", self.settings_view.hum_slider.offset)
-            write_to_yaml("temperature_offset", self.settings_view.temp_slider.offset)
+            write_to_yaml(
+                "humidity_offset", self.settings_view.slider_manager.hum_slider.offset
+            )
+            write_to_yaml(
+                "temperature_offset",
+                self.settings_view.slider_manager.temp_slider.offset,
+            )
             write_to_yaml("mission_ids", mission_ids)
 
             # update arduino handler with the correct slider values
             dispatcher.send(
                 signal="set_offset",
                 sender={
-                    "hum_offset": self.settings_view.hum_slider.offset,
-                    "temp_offset": self.settings_view.temp_slider.offset,
+                    "hum_offset": self.settings_view.slider_manager.hum_slider.offset,
+                    "temp_offset": self.settings_view.slider_manager.temp_slider.offset,
                 },
             )
 

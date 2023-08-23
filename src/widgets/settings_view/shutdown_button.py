@@ -9,7 +9,7 @@ class ShutdownButton(QWidget):
         super(ShutdownButton, self).__init__()
 
         layout = QVBoxLayout()
-        layout.setContentsMargins(10, 0, 10, 10)
+        layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
 
         self.shutdown_btn = QPushButton("Shutdown", self)

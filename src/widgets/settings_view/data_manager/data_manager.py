@@ -1,11 +1,5 @@
-from PyQt5.QtWidgets import (
-    QWidget,
-    QHBoxLayout,
-    # QLineEdit,
-    # QListWidget,
-    # QAbstractItemView,
-    # QLabel,
-)
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
+
 
 from widgets.settings_view.data_manager.delete_button import DeleteButton
 from widgets.settings_view.data_manager.output_button import OutputDataButton
