@@ -1,11 +1,12 @@
 import os
+import sys
 
 from distutils.dir_util import copy_tree
-import sys
 from pydispatch import dispatcher
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+
 from widgets.title_bar.title_bar import TitleBar
 from widgets.main_view.main_view import MainView
 from widgets.settings_view.settings_view import SettingsView
@@ -34,16 +35,7 @@ class MainWindow(QMainWindow):
         self.setup_threads()
         self.setup_widgets()
         self.setup_ui()
-
-        dispatcher.connect(
-            self.toggle_timelapse, signal="toggle_logging", sender=dispatcher.Any
-        )
-        dispatcher.connect(
-            self.handle_shutdown, signal="shutdown_signal", sender=dispatcher.Any
-        )
-        dispatcher.connect(
-            self.copy_files, signal="output_files_signal", sender=dispatcher.Any
-        )
+        self.setup_dispatchers()
 
         #####
         context = Context()
@@ -54,42 +46,33 @@ class MainWindow(QMainWindow):
         monitor.start()
 
     def device_connected(self, device):
-        # self.textBrowser.append(device.sys_name)
-        # print("Test")
-        # print("device node", device.device_node)
-        # print("device type", device.device_type)
-        # p = self.find_mount_point(device.device_node)
-        # print(p)
-        # print("device path", device.device_path)
-        # print("device sys_name", device.sys_name)
-        # print("device sys_path", device.sys_path)
+        print(device.action)
+        directory = next(os.walk("/media/pi"))[1]
 
-        # print(next(os.walk("/media/pi"))[1])
-        dirs = next(os.walk("/media/pi"))[1]
-        if dirs:
-            print(dirs)
-            new_path = os.path.join("/media/pi", dirs[0])
+        if device.action == "change" and directory:
+            print(directory)
+            new_path = os.path.join("/media/pi", directory[0])
             print(new_path)
             self.usb_path = new_path
-
-        # for root, dirs, files in os.walk("/media/pi"):
-        #     print("root", root)
-        #     print("dirs", dirs)
-        #     print("files", files)
-        # print(root, "consumes")
-        # print(sum(os.path.getsize(os.path.join(root, name)) for name in files))
-        # print("bytes in", len(files), "non-directory files")
-
-    # def find_mount_point(self, path):
-    #     path = os.path.abspath(path)
-    #     while not os.path.ismount(path):
-    #         path = os.path.dirname(path)
-    #     return path
+            dispatcher.send(
+                signal="enable_output_button",
+                sender=True,
+            )
+        if device.action == "remove":
+            print("No device or device removed.")
+            dispatcher.send(
+                signal="enable_output_button",
+                sender=False,
+            )
 
     ######
 
     def __del__(self):
         print("\nApp unwind.")
+
+    #
+    # Setup specific functions
+    #
 
     def setup_threads(self):
         self.sensor_manager = SensorManager()
@@ -114,6 +97,42 @@ class MainWindow(QMainWindow):
         # dummy widget used as central widget
         self.setCentralWidget(widget)
 
+    def setup_widgets(self):
+        self.main_view = MainView()
+        self.settings_view = SettingsView()
+        self.title = TitleBar(self.main_view, self.settings_view)
+
+    def setup_dispatchers(self):
+        dispatcher.connect(
+            self.toggle_timelapse, signal="toggle_logging", sender=dispatcher.Any
+        )
+        dispatcher.connect(
+            self.handle_shutdown, signal="shutdown_signal", sender=dispatcher.Any
+        )
+        dispatcher.connect(
+            self.copy_files, signal="output_files_signal", sender=dispatcher.Any
+        )
+
+    #
+    # Key bindings and related functions
+    #
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Escape:
+            self.close()
+        if e.key() == Qt.Key_F11:
+            self.toggleFullScreen()
+
+    def toggleFullScreen(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
+    #
+    # Dispatcher specific functions
+    #
+
     def toggle_timelapse(self, sender):
         mission_id = self.main_view.content.options.drop_down.combobox.currentText()
         if not mission_id:
@@ -134,22 +153,9 @@ class MainWindow(QMainWindow):
             )
             self.timelapse_thread.stop()
 
-    def setup_widgets(self):
-        self.main_view = MainView()
-        self.settings_view = SettingsView()
-        self.title = TitleBar(self.main_view, self.settings_view)
-
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key_Escape:
-            self.close()
-        if e.key() == Qt.Key_F11:
-            self.toggleFullScreen()
-
-    def toggleFullScreen(self):
-        if self.isFullScreen():
-            self.showNormal()
-        else:
-            self.showFullScreen()
+    def handle_shutdown(self, sender):
+        print(sender, "shutdown!!!")
+        os.system("systemctl poweroff")
 
     def copy_files(self):
         new_path = self.usb_path + "/weather_station_data/"
@@ -159,14 +165,6 @@ class MainWindow(QMainWindow):
 
         copy_tree("/home/pi/weather_station_data/", new_path)
         print("DONE")
-        # 2nd option
-        # shutil.copy2(
-        #     "/home/pi/weather_station_data/", self.usb_path
-        #     )  # dst can be a folder; use shutil.copy2() to preserve timestamp
-
-    def handle_shutdown(self, sender):
-        print(sender, "shutdown!!!")
-        os.system("systemctl poweroff")
 
 
 app = QApplication(sys.argv)

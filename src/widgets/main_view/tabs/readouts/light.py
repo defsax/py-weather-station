@@ -33,5 +33,6 @@ class LightDisplay(QWidget):
         )
 
     def update_values(self, sender):
-        l = str(round(sender["wm2"], 1))
+        l = str(round(sender["wm2"]))
+        # l = str(round(sender["wm2"], 1))
         self.status_light.setText(l)
