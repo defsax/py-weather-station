@@ -1,5 +1,8 @@
 import yaml
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout
+
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QTabWidget
+
 from widgets.settings_view.temp_slider import TempSlider
 from widgets.settings_view.hum_slider import HumSlider
 from widgets.settings_view.id_manager.id_manager import IdManager
@@ -20,15 +23,21 @@ class SettingsView(QMainWindow):
         # create layout containers
         self.overall_layout = QVBoxLayout()
 
+        self.tabs = QTabWidget()
+        self.tabs.setTabPosition(QTabWidget.North)
+        self.tabs.setIconSize(QSize(20, 20))
+        self.tabs.setMovable(True)
+
+        self.overall_layout.addWidget(self.tabs)
         self.overall_layout.setContentsMargins(0, 0, 0, 0)
-        self.overall_layout.addWidget(self.temp_slider)
-        self.overall_layout.addWidget(self.hum_slider)
-        self.overall_layout.addWidget(self.id_manager)
-        self.overall_layout.addWidget(self.data_manager)
+        self.overall_layout.setSpacing(10)
+
+        # self.overall_layout.addWidget(self.temp_slider)
+        # self.overall_layout.addWidget(self.hum_slider)
         self.overall_layout.addWidget(self.shutdown_button)
 
-        # layout = QHBoxLayout()
-        # layout.setContentsMargins(0, 0, 0, 0)
+        self.tabs.addTab(self.id_manager, "IDs")
+        self.tabs.addTab(self.data_manager, "Data")
 
         # dummy widget to hold layout, layout holds actual widgets
         widget = QWidget()
