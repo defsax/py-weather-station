@@ -28,6 +28,7 @@ class SettingsView(QMainWindow):
         self.tabs.setMovable(True)
 
         self.overall_layout.addWidget(self.tabs)
+        self.overall_layout.addStretch()
         self.overall_layout.addWidget(self.shutdown_button)
 
         self.overall_layout.setContentsMargins(0, 0, 0, 0)

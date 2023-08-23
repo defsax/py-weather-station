@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
 
 from pydispatch import dispatcher
 from helpers import resource_path
+from constants import CALIBRATION_FONT_SIZE
 
 
 class TempSlider(QWidget):
@@ -18,12 +19,12 @@ class TempSlider(QWidget):
 
         self.label = QLabel("Temperature Offset: " + str(self.offset))
         font = self.label.font()
-        font.setPointSize(14)
+        font.setPointSize(CALIBRATION_FONT_SIZE)
         self.label.setFont(font)
 
         self.t_reference = QLabel(str(self.current_temperature + offset))
         font = self.t_reference.font()
-        font.setPointSize(14)
+        font.setPointSize(CALIBRATION_FONT_SIZE)
         self.t_reference.setFont(font)
 
         self.slider = QSlider(Qt.Orientation.Horizontal, self)
