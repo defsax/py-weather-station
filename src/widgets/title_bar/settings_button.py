@@ -33,8 +33,11 @@ class SettingsButton(QWidget):
 
     def handleButton(self):
         if self.main_view.isVisible():
-            # if timelapse is running it should stop
-            # or, if it's running then disable settings
+            # Update file list in data tab
+            dispatcher.send(
+                signal="refresh_file_data",
+                sender="output",
+            )
 
             # switch views
             self.main_view.hide()

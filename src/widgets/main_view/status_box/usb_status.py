@@ -23,11 +23,15 @@ class USBStatus(QWidget):
         layout.addStretch()
         layout.addWidget(self.status)
 
+        self.is_inserted = False
+
         dispatcher.connect(
             self.set_status, signal="usb_is_inserted", sender=dispatcher.Any
         )
 
     def set_status(self, sender):
+        self.is_inserted = sender
+
         if sender:
             text_color = "green"
             status = "Connected"

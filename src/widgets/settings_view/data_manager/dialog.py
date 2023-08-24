@@ -37,6 +37,10 @@ class Dialog(QDialog):
         else:
             print("deleting all data...")
             delete_files("/home/pi/weather_station_data/*")
+            dispatcher.send(
+                signal="refresh_file_data",
+                sender="output",
+            )
 
     def reject(self):
         print("no")
