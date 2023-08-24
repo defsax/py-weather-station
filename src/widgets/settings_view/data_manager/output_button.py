@@ -17,10 +17,10 @@ class OutputDataButton(QWidget):
         self.output_data_button.setText("Output Data")
         self.output_data_button.clicked.connect(self.double_check)
         self.output_data_button.setEnabled(False)
-        self.output_data_button.setStyleSheet(
-            "padding: 10px; border-radius: 10px; background-color: rgba(0, 0, 255, 0.3)"
-        )
-        self.output_data_button.setFont(QtGui.QFont("AnyStyle", 16))
+        # self.output_data_button.setStyleSheet(
+        #     "padding: 10px; border-radius: 10px; background-color: rgba(0, 0, 255, 0.3)"
+        # )
+        # self.output_data_button.setFont(QtGui.QFont("AnyStyle", 16))
         layout.addWidget(self.output_data_button)
 
         dispatcher.connect(

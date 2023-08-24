@@ -30,11 +30,10 @@ class IdManager(QWidget):
         font.setPointSize(14)
         self.mission_id_label.setFont(font)
 
-        self.add_box = QLineEdit()
-
         self.id_area = QListWidget()
         self.id_area.setSelectionMode(QAbstractItemView.SingleSelection)
 
+        self.add_box = QLineEdit()
         self.add_remove_buttons = ButtonsWidget(self)
 
         try:
@@ -42,6 +41,7 @@ class IdManager(QWidget):
             self.config = yaml.safe_load(open(path))
         except:
             print("Error reading settings.yml")
+
         for i, item in enumerate(self.config["mission_ids"]):
             self.id_area.addItem(item)
 

@@ -16,10 +16,10 @@ class DeleteButton(QWidget):
         self.delete_button.clicked.connect(self.double_check)
         self.delete_button.setEnabled(True)
 
-        self.delete_button.setStyleSheet(
-            "padding: 10px; border-radius: 10px; background-color: rgba(255, 0, 0, 0.3)"
-        )
-        self.delete_button.setFont(QtGui.QFont("AnyStyle", 16))
+        # self.delete_button.setStyleSheet(
+        #     "padding: 10px; border-radius: 10px; background-color: rgba(255, 0, 0, 0.3)"
+        # )
+        # self.delete_button.setFont(QtGui.QFont("AnyStyle", 16))
         layout.addWidget(self.delete_button)
 
     def double_check(self):
