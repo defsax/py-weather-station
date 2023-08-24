@@ -25,7 +25,7 @@ class OutputDataButton(QWidget):
 
         dispatcher.connect(
             self.set_enable_output_button,
-            signal="enable_output_button",
+            signal="usb_is_inserted",
             sender=dispatcher.Any,
         )
 

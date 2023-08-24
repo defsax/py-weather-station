@@ -36,36 +36,7 @@ class MainWindow(QMainWindow):
         self.setup_widgets()
         self.setup_ui()
         self.setup_dispatchers()
-
-        #####
-        context = Context()
-        monitor = Monitor.from_netlink(context)
-        monitor.filter_by(subsystem="block", device_type="partition")
-        self.observer = MonitorObserver(monitor)
-        self.observer.deviceEvent.connect(self.device_connected)
-        monitor.start()
-
-    def device_connected(self, device):
-        print(device.action)
-        directory = next(os.walk("/media/pi"))[1]
-
-        if device.action == "change" and directory:
-            print(directory)
-            new_path = os.path.join("/media/pi", directory[0])
-            print(new_path)
-            self.usb_path = new_path
-            dispatcher.send(
-                signal="enable_output_button",
-                sender=True,
-            )
-        if device.action == "remove":
-            print("No device or device removed.")
-            dispatcher.send(
-                signal="enable_output_button",
-                sender=False,
-            )
-
-    ######
+        self.setup_usb()
 
     def __del__(self):
         print("\nApp unwind.")
@@ -112,6 +83,37 @@ class MainWindow(QMainWindow):
         dispatcher.connect(
             self.copy_files, signal="output_files_signal", sender=dispatcher.Any
         )
+
+    # USB Monitor Setup
+    def setup_usb(self):
+        context = Context()
+        monitor = Monitor.from_netlink(context)
+        monitor.filter_by(subsystem="block", device_type="partition")
+        self.observer = MonitorObserver(monitor)
+        self.observer.deviceEvent.connect(self.device_connected)
+        monitor.start()
+
+    def device_connected(self, device):
+        print(device.action)
+        # get mountpoint folder
+        directory = next(os.walk("/media/pi"))[1]
+
+        # wait until "change", so that device is mounted
+        if device.action == "change" and directory:
+            print(directory)
+            new_path = os.path.join("/media/pi", directory[0])
+            print(new_path)
+            self.usb_path = new_path
+            dispatcher.send(
+                signal="usb_is_inserted",
+                sender=True,
+            )
+        if device.action == "remove":
+            print("No device or device removed.")
+            dispatcher.send(
+                signal="usb_is_inserted",
+                sender=False,
+            )
 
     #
     # Key bindings and related functions

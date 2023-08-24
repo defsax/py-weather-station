@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
 
 from widgets.settings_view.data_manager.delete_button import DeleteButton
 from widgets.settings_view.data_manager.output_button import OutputDataButton
+from widgets.main_view.status_box.usb_status import USBStatus
 
 
 class DataManager(QWidget):
@@ -19,6 +20,8 @@ class DataManager(QWidget):
 
         layout = QVBoxLayout()
         self.setLayout(layout)
+
+        self.usb_status = USBStatus()
 
         self.id_area = QListWidget()
         self.id_area.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -43,5 +46,6 @@ class DataManager(QWidget):
         self.delete_button = DeleteButton()
 
         layout.addWidget(self.id_area)
+        layout.addWidget(self.usb_status)
         layout.addWidget(self.output_button)
         layout.addWidget(self.delete_button)
