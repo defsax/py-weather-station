@@ -62,15 +62,40 @@ class DataManager(QWidget):
         self.selected_item = current
         print("on_selection_change", self.selected_item)
 
-        if self.selected_item and self.usb_status.is_inserted:
-            self.output_buttons.export_single_button.setEnabled(True)
-        else:
-            self.output_buttons.export_single_button.setEnabled(False)
-
+        # enable delete item button if selection is made
         if self.selected_item:
             self.delete_buttons.delete_item_button.setEnabled(True)
-        else:
+            self.delete_buttons.item = self.selected_item.text()
+
+        # if there is an item selected and the usb is inserted (updated in two places):
+        if self.selected_item and self.usb_status.is_inserted:
+            self.output_buttons.export_single_button.setEnabled(True)
+            # pass selected item to export item button
+            self.output_buttons.item = self.selected_item.text()
+
+        # if there is no selection disable delete and export item buttons
+        if not self.selected_item:
+            self.output_buttons.export_single_button.setEnabled(False)
             self.delete_buttons.delete_item_button.setEnabled(False)
+
+    def on_usb_change(self, sender):
+        # is_enabled is whether usb is inserted or not
+        is_usb_inserted = sender
+
+        print(len(self.get_list_items()))
+
+        # if there are items in the list and the usb is inserted:
+        if len(self.get_list_items()) and is_usb_inserted:
+            self.output_buttons.export_all_button.setEnabled(is_usb_inserted)
+
+        # if there is an item selected and the usb is inserted (updated in two places):
+        if self.selected_item and is_usb_inserted:
+            self.output_buttons.export_single_button.setEnabled(is_usb_inserted)
+
+        # if the usb is removed:
+        if not is_usb_inserted:
+            self.output_buttons.export_single_button.setEnabled(is_usb_inserted)
+            self.output_buttons.export_all_button.setEnabled(is_usb_inserted)
 
     def remove_item(self):
         # row = self.data_area.row(self.selected_item)
@@ -80,29 +105,8 @@ class DataManager(QWidget):
         delete_files(PATH_DATA_FOLDER + self.selected_item.text())
         self.refresh_data_list()
 
-    def on_usb_change(self, sender):
-        # is_enabled is whether usb is inserted or not
-        is_enabled = sender
-
-        print(len(self.get_list_items()))
-
-        # if there are items in the list and the usb is inserted:
-        if len(self.get_list_items()) and is_enabled:
-            self.output_buttons.export_all_button.setEnabled(is_enabled)
-
-        # if there is an item selected and the usb is inserted:
-        if self.selected_item and is_enabled:
-            self.output_buttons.export_single_button.setEnabled(is_enabled)
-
-        # if the usb is removed:
-        if not is_enabled:
-            self.output_buttons.export_single_button.setEnabled(is_enabled)
-            self.output_buttons.export_all_button.setEnabled(is_enabled)
-
     def refresh_data_list(self):
         self.data_area.clear()
-
-        # path = "/home/pi/weather_station_data"
 
         try:
             onlyfiles = [
@@ -114,12 +118,16 @@ class DataManager(QWidget):
             print("Error reading settings.yml")
 
         if len(onlyfiles):
+            if self.usb_status.is_inserted:
+                self.output_buttons.export_all_button.setEnabled(True)
+
             self.delete_buttons.delete_all_button.setEnabled(True)
             for file in onlyfiles:
                 self.data_area.addItem(file)
 
         else:
             self.delete_buttons.delete_all_button.setEnabled(False)
+            self.output_buttons.export_all_button.setEnabled(False)
 
     def get_list_items(self):
         items = [self.data_area.item(x) for x in range(self.data_area.count())]

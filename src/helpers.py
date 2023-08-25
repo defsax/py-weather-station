@@ -3,6 +3,8 @@ import yaml
 import sys
 import os
 import glob
+import shutil
+
 from pydispatch import dispatcher
 from PyQt5.QtCore import pyqtSlot
 
@@ -88,3 +90,8 @@ def delete_files(loc):
     for f in files:
         print("Removing", f, "...")
         os.remove(f)
+
+
+def copy_single(file, dest):
+    print("copy single", file, dest)
+    shutil.copy(file, dest)

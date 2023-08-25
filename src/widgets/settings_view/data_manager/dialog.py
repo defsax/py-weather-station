@@ -1,14 +1,15 @@
-from pydispatch import dispatcher
+# from pydispatch import dispatcher
 
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QDialogButtonBox, QDialog
 
-from helpers import delete_files
-from constants import PATH_DATA_FOLDER
+# from helpers import delete_files
+# from constants import PATH_DATA_FOLDER
 
 
 class Dialog(QDialog):
-    def __init__(self, command):
+    def __init__(self, callback, command):
         super().__init__()
+        self.callback = callback
         self.command = command
         self.setWindowTitle("Notice!")
 
@@ -18,7 +19,7 @@ class Dialog(QDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 
-        message = QLabel(f"Are you sure you want to {command} all data?")
+        message = QLabel(self.command)
 
         self.layout = QVBoxLayout()
         self.layout.addWidget(message)
@@ -28,23 +29,25 @@ class Dialog(QDialog):
     def accept(self):
         self.done(0)
         print("yes")
-        if self.command == "output":
-            print("outputting to usb...")
-            # send output signal out
-            dispatcher.send(
-                signal="output_files_signal",
-                sender="output",
-            )
+        self.callback()
 
-        else:
-            print("deleting all data...")
-            # Add * to delete all
-            delete_files(PATH_DATA_FOLDER + "*")
-            # delete_files("/home/pi/weather_station_data/*")
-            dispatcher.send(
-                signal="refresh_file_data",
-                sender="output",
-            )
+        # if self.command == "output":
+        #     print("outputting to usb...")
+        #     # send output signal out
+        #     dispatcher.send(
+        #         signal="output_files_signal",
+        #         sender="output",
+        #     )
+
+        # else:
+        #     print("deleting all data...")
+        #     # Add * to delete all
+        #     delete_files(PATH_DATA_FOLDER + "*")
+        #     # delete_files("/home/pi/weather_station_data/*")
+        #     dispatcher.send(
+        #         signal="refresh_file_data",
+        #         sender="output",
+        #     )
 
     def reject(self):
         print("no")

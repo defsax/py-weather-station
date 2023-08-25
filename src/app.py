@@ -18,6 +18,7 @@ from threads.timelapse_thread import TimelapseThread
 from threads.server import ServerThread
 from threads.sensor_manager import SensorManager
 
+from helpers import copy_single
 from constants import PATH_DATA_FOLDER
 
 
@@ -165,13 +166,22 @@ class MainWindow(QMainWindow):
         print(sender, "shutdown!!!")
         os.system("systemctl poweroff")
 
-    def copy_files(self):
+    def copy_files(self, sender):
         new_path = self.usb_path + "/weather_station_data/"
         if not os.path.exists(new_path):
             print(self.usb_path + "/weather_station_data/ does not exist. Creating...")
             os.makedirs(new_path)
 
-        copy_tree(PATH_DATA_FOLDER, new_path)
+        print("sender", sender)
+        if sender["cmd"] == "all":
+            # copy all
+            copy_tree(PATH_DATA_FOLDER, new_path)
+        if sender["cmd"] == "single":
+            # copy one
+            file_path = os.path.join(PATH_DATA_FOLDER, sender["file_name"])
+            print(file_path)
+            copy_single(file_path, new_path)
+
         print("DONE")
 
 

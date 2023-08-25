@@ -1,5 +1,6 @@
 BASIC_FONT_SIZE = 18
-
+TAB_FONT_SIZE = 18
+TITLE_FONT_SIZE = 18
 
 PATH_DATA_FOLDER = "/home/pi/weather_station_data/"
 PATH_SLIDER_STYLESHEET = (
