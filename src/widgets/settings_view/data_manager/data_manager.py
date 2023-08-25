@@ -14,7 +14,9 @@ from PyQt5.QtWidgets import (
 from widgets.settings_view.data_manager.delete_buttons import DeleteButtons
 from widgets.settings_view.data_manager.output_buttons import OutputDataButtons
 from widgets.main_view.status_box.usb_status import USBStatus
+
 from helpers import delete_files
+from constants import PATH_DATA_FOLDER
 
 
 class DataManager(QWidget):
@@ -70,7 +72,8 @@ class DataManager(QWidget):
         # row = self.id_area.row(self.selected_item)
         # print(self.selected_item.text())
         # self.id_area.takeItem(row)
-        delete_files("/home/pi/weather_station_data/" + self.selected_item.text())
+
+        delete_files(PATH_DATA_FOLDER + self.selected_item.text())
         self.refresh_data_list()
 
     def on_usb_change(self, sender):
@@ -86,19 +89,21 @@ class DataManager(QWidget):
     def refresh_data_list(self):
         self.id_area.clear()
 
-        path = "/home/pi/weather_station_data"
+        # path = "/home/pi/weather_station_data"
 
         try:
-            onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+            onlyfiles = [
+                f
+                for f in listdir(PATH_DATA_FOLDER)
+                if isfile(join(PATH_DATA_FOLDER, f))
+            ]
         except:
             print("Error reading settings.yml")
 
         if len(onlyfiles):
-            print("true len onlyfiles", len(onlyfiles))
             self.delete_buttons.delete_all_button.setEnabled(True)
             for file in onlyfiles:
                 self.id_area.addItem(file)
 
         else:
-            print("false len onlyfiles", len(onlyfiles))
             self.delete_buttons.delete_all_button.setEnabled(False)

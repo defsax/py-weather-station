@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
 
 from pydispatch import dispatcher
 from helpers import resource_path
-from constants import CALIBRATION_FONT_SIZE
+
+from constants import CALIBRATION_FONT_SIZE, PATH_SLIDER_STYLESHEET
 
 
 class HumSlider(QWidget):
@@ -35,7 +36,7 @@ class HumSlider(QWidget):
 
         # load style for slider
         try:
-            path = "/home/pi/code/python/py-weather-station/src/widgets/settings_view/slider_style.qss"
+            path = PATH_SLIDER_STYLESHEET
 
         except:
             path = resource_path("slider_style.qss")

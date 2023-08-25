@@ -2,7 +2,9 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 from pydispatch import dispatcher
+
 from helpers import write_to_yaml, resource_path
+from constants import PATH_SETTINGS_ICON
 
 
 class SettingsButton(QWidget):
@@ -16,7 +18,7 @@ class SettingsButton(QWidget):
         self.button.clicked.connect(self.handleButton)
         self.button.setIconSize(QSize(25, 25))
         try:
-            path = "/home/pi/code/python/py-weather-station/resources/icons/settings-icon.png"
+            path = PATH_SETTINGS_ICON
             self.button.setIcon(QIcon(path))
 
         except:

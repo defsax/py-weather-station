@@ -1,7 +1,9 @@
 from pydispatch import dispatcher
 
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QDialogButtonBox, QDialog
+
 from helpers import delete_files
+from constants import PATH_DATA_FOLDER
 
 
 class Dialog(QDialog):
@@ -36,7 +38,9 @@ class Dialog(QDialog):
 
         else:
             print("deleting all data...")
-            delete_files("/home/pi/weather_station_data/*")
+            # Add * to delete all
+            delete_files(PATH_DATA_FOLDER + "*")
+            # delete_files("/home/pi/weather_station_data/*")
             dispatcher.send(
                 signal="refresh_file_data",
                 sender="output",

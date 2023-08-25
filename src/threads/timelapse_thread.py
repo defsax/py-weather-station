@@ -1,7 +1,11 @@
-from threading import Event
-from datetime import datetime
 import os
+
 from PyQt5.QtCore import QThread
+
+from datetime import datetime
+from threading import Event
+
+from constants import PATH_DATA_FOLDER
 
 
 class TimelapseThread(QThread):
@@ -14,7 +18,7 @@ class TimelapseThread(QThread):
         self.mission_id = mission_id
 
         # get/set destination folder
-        self.path = os.path.abspath("/home/pi/weather_station_data")
+        self.path = os.path.abspath(PATH_DATA_FOLDER)
 
         # get and format date
         start = datetime.now()

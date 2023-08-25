@@ -1,6 +1,8 @@
 import os
 import sys
 
+from pyudev.pyqt5 import MonitorObserver
+from pyudev import Context, Monitor
 from distutils.dir_util import copy_tree
 from pydispatch import dispatcher
 
@@ -16,8 +18,7 @@ from threads.timelapse_thread import TimelapseThread
 from threads.server import ServerThread
 from threads.sensor_manager import SensorManager
 
-from pyudev.pyqt5 import MonitorObserver
-from pyudev import Context, Monitor
+from constants import PATH_DATA_FOLDER
 
 
 class MainWindow(QMainWindow):
@@ -165,7 +166,7 @@ class MainWindow(QMainWindow):
             print(self.usb_path + "/weather_station_data/ does not exist. Creating...")
             os.makedirs(new_path)
 
-        copy_tree("/home/pi/weather_station_data/", new_path)
+        copy_tree(PATH_DATA_FOLDER, new_path)
         print("DONE")
 
 
