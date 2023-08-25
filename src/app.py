@@ -92,7 +92,13 @@ class MainWindow(QMainWindow):
         monitor.filter_by(subsystem="block", device_type="partition")
         self.observer = MonitorObserver(monitor)
         self.observer.deviceEvent.connect(self.device_connected)
+
         monitor.start()
+
+        # super hacky please change
+        if os.path.exists("/media/pi/" + next(os.walk("/media/pi"))[1][0]):
+            print("usb already inserted")
+            self.device_connected(type("", (object,), {"action": "change"})())
 
     def device_connected(self, device):
         print(device.action)
@@ -101,10 +107,9 @@ class MainWindow(QMainWindow):
 
         # wait until "change", so that device is mounted
         if device.action == "change" and directory:
-            print(directory)
             new_path = os.path.join("/media/pi", directory[0])
-            print(new_path)
             self.usb_path = new_path
+
             dispatcher.send(
                 signal="usb_is_inserted",
                 sender=True,

@@ -12,11 +12,6 @@ class DropDown(QWidget):
         self.combobox = QComboBox()
         self.load_mission_ids()
 
-        # Connect signals to the methods.
-        self.combobox.activated.connect(self.activated)
-        self.combobox.currentTextChanged.connect(self.text_changed)
-        self.combobox.currentIndexChanged.connect(self.index_changed)
-
         layout = QHBoxLayout()
         layout.addWidget(self.combobox)
         self.setLayout(layout)
@@ -27,15 +22,6 @@ class DropDown(QWidget):
 
     def handleButton(self):
         print("settings button")
-
-    def activated(Self, index):
-        print("Activated index:", index)
-
-    def text_changed(self, s):
-        print("Text changed:", s)
-
-    def index_changed(self, index):
-        print("Index changed", index)
 
     def load_mission_ids(self, list=None):
         if list == None:

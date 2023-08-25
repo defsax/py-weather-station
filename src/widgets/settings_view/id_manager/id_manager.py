@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
 from widgets.settings_view.id_manager.buttons import ButtonsWidget
 
 from helpers import resource_path
+from constants import BASIC_FONT_SIZE
 
 
 class IdManager(QWidget):
@@ -32,6 +33,9 @@ class IdManager(QWidget):
 
         self.id_area = QListWidget()
         self.id_area.setSelectionMode(QAbstractItemView.SingleSelection)
+        font = self.id_area.font()
+        font.setPointSize(BASIC_FONT_SIZE)
+        self.id_area.setFont(font)
 
         self.add_box = QLineEdit()
         self.add_remove_buttons = ButtonsWidget(self)

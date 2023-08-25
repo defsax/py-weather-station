@@ -16,7 +16,7 @@ from widgets.settings_view.data_manager.output_buttons import OutputDataButtons
 from widgets.main_view.status_box.usb_status import USBStatus
 
 from helpers import delete_files
-from constants import PATH_DATA_FOLDER
+from constants import PATH_DATA_FOLDER, BASIC_FONT_SIZE
 
 
 class DataManager(QWidget):
@@ -29,16 +29,20 @@ class DataManager(QWidget):
         self.usb_status = USBStatus()
         self.selected_item = None
 
-        self.id_area = QListWidget()
-        self.id_area.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.id_area.currentItemChanged.connect(self.on_selection_change)
+        self.data_area = QListWidget()
+        font = self.data_area.font()
+        font.setPointSize(BASIC_FONT_SIZE)
+        self.data_area.setFont(font)
+
+        self.data_area.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.data_area.currentItemChanged.connect(self.on_selection_change)
 
         self.output_buttons = OutputDataButtons()
         self.delete_buttons = DeleteButtons(self.remove_item)
 
         self.refresh_data_list()
 
-        layout.addWidget(self.id_area)
+        layout.addWidget(self.data_area)
         layout.addWidget(self.usb_status)
         layout.addWidget(self.output_buttons)
         layout.addWidget(self.delete_buttons)
@@ -69,25 +73,34 @@ class DataManager(QWidget):
             self.delete_buttons.delete_item_button.setEnabled(False)
 
     def remove_item(self):
-        # row = self.id_area.row(self.selected_item)
+        # row = self.data_area.row(self.selected_item)
         # print(self.selected_item.text())
-        # self.id_area.takeItem(row)
+        # self.data_area.takeItem(row)
 
         delete_files(PATH_DATA_FOLDER + self.selected_item.text())
         self.refresh_data_list()
 
     def on_usb_change(self, sender):
+        # is_enabled is whether usb is inserted or not
         is_enabled = sender
-        self.output_buttons.export_all_button.setEnabled(is_enabled)
 
+        print(len(self.get_list_items()))
+
+        # if there are items in the list and the usb is inserted:
+        if len(self.get_list_items()) and is_enabled:
+            self.output_buttons.export_all_button.setEnabled(is_enabled)
+
+        # if there is an item selected and the usb is inserted:
         if self.selected_item and is_enabled:
             self.output_buttons.export_single_button.setEnabled(is_enabled)
 
+        # if the usb is removed:
         if not is_enabled:
             self.output_buttons.export_single_button.setEnabled(is_enabled)
+            self.output_buttons.export_all_button.setEnabled(is_enabled)
 
     def refresh_data_list(self):
-        self.id_area.clear()
+        self.data_area.clear()
 
         # path = "/home/pi/weather_station_data"
 
@@ -103,7 +116,11 @@ class DataManager(QWidget):
         if len(onlyfiles):
             self.delete_buttons.delete_all_button.setEnabled(True)
             for file in onlyfiles:
-                self.id_area.addItem(file)
+                self.data_area.addItem(file)
 
         else:
             self.delete_buttons.delete_all_button.setEnabled(False)
+
+    def get_list_items(self):
+        items = [self.data_area.item(x) for x in range(self.data_area.count())]
+        return items

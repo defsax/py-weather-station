@@ -11,12 +11,12 @@ class USBStatus(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         title = QLabel("USB drive... ")
-        font = title.font()
-        font.setPointSize(16)
+        # font = title.font()
+        # font.setPointSize(16)
 
         self.status = QLabel("Disconnected")
-        font = self.status.font()
-        font.setPointSize(16)
+        # font = self.status.font()
+        # font.setPointSize(16)
         self.status.setStyleSheet("color: red")
 
         layout.addWidget(title)

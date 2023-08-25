@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
 from pydispatch import dispatcher
 from helpers import resource_path
 
-from constants import CALIBRATION_FONT_SIZE, PATH_SLIDER_STYLESHEET
+from constants import BASIC_FONT_SIZE, PATH_SLIDER_STYLESHEET
 
 
 class HumSlider(QWidget):
@@ -20,12 +20,12 @@ class HumSlider(QWidget):
 
         self.label = QLabel("Humidity Offset: " + str(self.offset))
         font = self.label.font()
-        font.setPointSize(CALIBRATION_FONT_SIZE)
+        font.setPointSize(BASIC_FONT_SIZE)
         self.label.setFont(font)
 
         self.rh_reference = QLabel(str(self.current_humidity + offset))
         font = self.rh_reference.font()
-        font.setPointSize(CALIBRATION_FONT_SIZE)
+        font.setPointSize(BASIC_FONT_SIZE)
         self.rh_reference.setFont(font)
 
         self.slider = QSlider(Qt.Orientation.Horizontal, self)
