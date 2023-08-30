@@ -1,8 +1,8 @@
-from PyQt5.QtCore import Qt, QFile, QIODevice, QTextStream
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSlider, QLabel
 
 from pydispatch import dispatcher
-from helpers import resource_path
+from helpers import load_stylesheet
 
 from constants import BASIC_FONT_SIZE, PATH_SLIDER_STYLESHEET
 
@@ -35,18 +35,9 @@ class HumSlider(QWidget):
         self.slider.valueChanged.connect(self.update)
 
         # load style for slider
-        try:
-            path = PATH_SLIDER_STYLESHEET
-
-        except:
-            path = resource_path("slider_style.qss")
-
-        try:
-            stream = QFile(path)
-            stream.open(QIODevice.ReadOnly)
-            self.slider.setStyleSheet(QTextStream(stream).readAll())
-        except:
-            print("issue loading qss")
+        self.slider.setStyleSheet(
+            load_stylesheet(PATH_SLIDER_STYLESHEET, "slider_style.qss")
+        )
 
         horizontal_layout = QHBoxLayout()
         horizontal_layout.setContentsMargins(0, 0, 0, 0)

@@ -8,8 +8,8 @@ from widgets.settings_view.data_manager.data_manager import DataManager
 from widgets.settings_view.slider_manager.slider_manager import SliderManager
 from widgets.settings_view.shutdown_button import ShutdownButton
 
-from helpers import resource_path
-from constants import BASIC_FONT_SIZE
+from helpers import resource_path, load_stylesheet
+from constants import BASIC_FONT_SIZE, PATH_TABS_STYLESHEET
 
 
 class SettingsView(QMainWindow):
@@ -27,6 +27,9 @@ class SettingsView(QMainWindow):
         self.tabs.setTabPosition(QTabWidget.North)
         self.tabs.setIconSize(QSize(20, 20))
         self.tabs.setMovable(True)
+        self.tabs.setStyleSheet(load_stylesheet(PATH_TABS_STYLESHEET, "tabs_style.qss"))
+
+        self.tabs.setDocumentMode(True)
 
         font = self.tabs.font()
         font.setPointSize(BASIC_FONT_SIZE)

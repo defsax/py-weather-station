@@ -6,7 +6,7 @@ import glob
 import shutil
 
 from pydispatch import dispatcher
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QFile, QIODevice, QTextStream
 
 
 # return list
@@ -95,3 +95,20 @@ def delete_files(loc):
 def copy_single(file, dest):
     print("copy single", file, dest)
     shutil.copy(file, dest)
+
+
+def load_stylesheet(long_path, short_path):
+    # load style for slider
+    try:
+        path = long_path
+
+    except:
+        path = resource_path(short_path)
+
+    try:
+        stream = QFile(path)
+        stream.open(QIODevice.ReadOnly)
+    except:
+        print("issue loading qss")
+
+    return QTextStream(stream).readAll()

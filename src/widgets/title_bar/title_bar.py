@@ -14,11 +14,7 @@ class TitleBar(QWidget):
         layout.setSpacing(0)
         self.setLayout(layout)
 
-        self.setStyleSheet(
-            "border-bottom: 1px solid grey; border-right: none; border-left: none; margin: 0px"
-        )
-        # self.setStyleSheet("padding: 10px; border-radius: 10px; background-color: red")
-        # layout.setFont(QtGui.QFont("AnyStyle", 16))
+        self.setStyleSheet("border-bottom: 1px solid grey")
 
         # context dependent label
         self.title = QLabel("Weather Station")
@@ -29,11 +25,9 @@ class TitleBar(QWidget):
 
         # time and time thread
         time = Time()
-
         settings_button = SettingsButton(main, settings)
 
         layout.addWidget(self.title, 1)
-        # layout.addStretch()
         layout.addWidget(time, 1)
         layout.addWidget(settings_button)
         layout.setAlignment(Qt.AlignTop)

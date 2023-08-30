@@ -15,6 +15,7 @@ class MainView(QMainWindow):
         self.overall_layout.addWidget(self.content)
 
         self.overall_layout.setContentsMargins(0, 0, 0, 0)
+        self.overall_layout.setSpacing(0)
 
         # dummy widget to hold layout, layout holds actual widgets
         widget = QWidget()

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from widgets.main_view.live_tabs import LiveTabs
 from widgets.main_view.options import Options
+from widgets.main_view.tabs.all_data import DataDisplay
 
 
 class ContentBox(QWidget):
@@ -11,9 +11,9 @@ class ContentBox(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
         layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
 
-        self.live_tabs = LiveTabs()
         self.options = Options()
 
-        layout.addWidget(self.live_tabs, 2)
+        layout.addWidget(DataDisplay(), 2)
         layout.addWidget(self.options, 1)
