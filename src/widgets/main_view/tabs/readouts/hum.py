@@ -19,7 +19,7 @@ class HumidityDisplay(QWidget):
         self.status_humidity.setFont(font)
         self.status_humidity.setAlignment(Qt.AlignBottom | Qt.AlignRight)
 
-        self.label = QLabel("%rh")
+        self.label = QLabel("%rh  ")
         font = self.label.font()
         font.setPointSize(12)
         self.label.setFont(font)

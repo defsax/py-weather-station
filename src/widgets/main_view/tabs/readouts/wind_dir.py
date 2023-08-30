@@ -19,7 +19,7 @@ class WindDirDisplay(QWidget):
         self.status_direction.setFont(font)
         self.status_direction.setAlignment(Qt.AlignBottom | Qt.AlignRight)
 
-        self.label = QLabel("direction")
+        self.label = QLabel("direction  ")
         font = self.label.font()
         font.setPointSize(12)
         self.label.setFont(font)

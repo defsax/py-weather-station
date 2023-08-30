@@ -19,7 +19,7 @@ class LightDisplay(QWidget):
         self.status_light.setFont(font)
         self.status_light.setAlignment(Qt.AlignBottom | Qt.AlignRight)
 
-        self.label = QLabel("wm2")
+        self.label = QLabel("wm2  ")
         font = self.label.font()
         font.setPointSize(12)
         self.label.setFont(font)
