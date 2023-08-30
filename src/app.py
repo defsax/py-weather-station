@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
         self.overall_layout.addWidget(self.settings_view)
         self.main_view.show()
         self.settings_view.hide()
-        self.overall_layout.setContentsMargins(10, 10, 10, 10)
+        self.overall_layout.setContentsMargins(0, 0, 0, 0)
 
         # dummy widget to hold layout, layout holds actual widgets
         widget = QWidget()
@@ -97,9 +97,12 @@ class MainWindow(QMainWindow):
         monitor.start()
 
         # super hacky please change
-        if os.path.exists("/media/pi/" + next(os.walk("/media/pi"))[1][0]):
-            print("usb already inserted")
-            self.device_connected(type("", (object,), {"action": "change"})())
+        try:
+            if os.path.exists("/media/pi/" + next(os.walk("/media/pi"))[1][0]):
+                print("usb already inserted")
+                self.device_connected(type("", (object,), {"action": "change"})())
+        except:
+            print("cannot open usb")
 
     def device_connected(self, device):
         print(device.action)

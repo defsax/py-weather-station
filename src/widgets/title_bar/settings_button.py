@@ -16,7 +16,12 @@ class SettingsButton(QWidget):
 
         self.button = QPushButton("", self)
         self.button.clicked.connect(self.handleButton)
-        self.button.setIconSize(QSize(25, 25))
+        self.button.setIconSize(QSize(45, 45))
+        # self.button.setIconSize(QSize(25, 25))
+        self.button.setStyleSheet(
+            "border-left: 1px solid grey; padding: 10px; margin: 0px; border-radius: 0px"
+        )
+
         try:
             path = PATH_SETTINGS_ICON
             self.button.setIcon(QIcon(path))
@@ -26,6 +31,7 @@ class SettingsButton(QWidget):
             self.button.setIcon(QIcon(path))
 
         layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.button)
         self.setLayout(layout)
 

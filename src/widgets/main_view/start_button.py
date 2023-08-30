@@ -20,7 +20,7 @@ class StartStop(QWidget):
         # ~ QSizePolicy.Expanding)
         # ~ self.start_btn.setGeometry(200, 150, 100, 40)
         self.start_btn.setStyleSheet(
-            "padding: 10px; border-radius: 10px; background-color: green"
+            "padding: 10px; border-radius: 0px; background-color: green"
         )
         self.start_btn.setFont(QtGui.QFont("AnyStyle", 25))
         layout.addWidget(self.start_btn)
