@@ -47,5 +47,5 @@ class StartStop(QWidget):
         if self.start_btn is not None:
             self.start_btn.setText(msg)
             self.start_btn.setStyleSheet(
-                "padding: 10px; border-radius: 10px; background-color: " + col
+                "padding: 10px; border-radius: 0px; background-color: " + col
             )

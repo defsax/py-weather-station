@@ -14,6 +14,7 @@ class ContentBox(QWidget):
         layout.setSpacing(0)
 
         self.options = Options()
+        self.data_display = DataDisplay()
 
-        layout.addWidget(DataDisplay(), 2)
+        layout.addWidget(self.data_display, 2)
         layout.addWidget(self.options, 1)

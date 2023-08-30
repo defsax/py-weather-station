@@ -20,7 +20,6 @@ class Options(QWidget):
         font.setPointSize(16)
         title.setFont(font)
         title.setAlignment(Qt.AlignCenter)
-        title.setStyleSheet("border-top: 1px solid grey")
 
         self.drop_down = DropDown()
         self.start_stop_button = StartStop()
@@ -30,4 +29,4 @@ class Options(QWidget):
         layout.addWidget(StatusBox())
         layout.addWidget(self.start_stop_button)
 
-        layout.setAlignment(Qt.AlignTop)
+        layout.setAlignment(Qt.AlignBottom)

@@ -15,8 +15,8 @@ class DataDisplay(QWidget):
         grid_layout = QGridLayout()
         grid_layout.setContentsMargins(0, 0, 0, 0)
         grid_layout.setSpacing(0)
-        grid_layout.setVerticalSpacing(0)
-        grid_layout.setHorizontalSpacing(0)
+        # grid_layout.setVerticalSpacing(0)
+        # grid_layout.setHorizontalSpacing(0)
 
         self.setLayout(grid_layout)
         self.setStyleSheet("background-color: white")
