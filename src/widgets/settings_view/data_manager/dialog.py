@@ -31,24 +31,6 @@ class Dialog(QDialog):
         print("yes")
         self.callback()
 
-        # if self.command == "output":
-        #     print("outputting to usb...")
-        #     # send output signal out
-        #     dispatcher.send(
-        #         signal="output_files_signal",
-        #         sender="output",
-        #     )
-
-        # else:
-        #     print("deleting all data...")
-        #     # Add * to delete all
-        #     delete_files(PATH_DATA_FOLDER + "*")
-        #     # delete_files("/home/pi/weather_station_data/*")
-        #     dispatcher.send(
-        #         signal="refresh_file_data",
-        #         sender="output",
-        #     )
-
     def reject(self):
         print("no")
         self.done(0)

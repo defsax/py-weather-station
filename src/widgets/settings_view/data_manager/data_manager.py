@@ -2,10 +2,8 @@ from os import listdir
 from os.path import isfile, join
 from pydispatch import dispatcher
 
-
 from PyQt5.QtWidgets import (
     QWidget,
-    QHBoxLayout,
     QVBoxLayout,
     QListWidget,
     QAbstractItemView,
@@ -14,6 +12,9 @@ from PyQt5.QtWidgets import (
 from widgets.settings_view.data_manager.delete_buttons import DeleteButtons
 from widgets.settings_view.data_manager.output_buttons import OutputDataButtons
 from widgets.main_view.status_box.usb_status import USBStatus
+from widgets.settings_view.data_manager.transfer_status_box import FileTranferStatusBox
+
+from dispatcher.senders import update_file_status
 
 from helpers import delete_files
 from constants import PATH_DATA_FOLDER, BASIC_FONT_SIZE
@@ -26,6 +27,7 @@ class DataManager(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
+        self.file_status = FileTranferStatusBox()
         self.usb_status = USBStatus()
         self.selected_item = None
 
@@ -44,6 +46,7 @@ class DataManager(QWidget):
 
         layout.addWidget(self.data_area)
         layout.addWidget(self.usb_status)
+        layout.addWidget(self.file_status)
         layout.addWidget(self.output_buttons)
         layout.addWidget(self.delete_buttons)
 
@@ -101,11 +104,13 @@ class DataManager(QWidget):
         # row = self.data_area.row(self.selected_item)
         # print(self.selected_item.text())
         # self.data_area.takeItem(row)
+        update_file_status(f"Deleting {self.selected_item.text()}...")
 
         delete_files(PATH_DATA_FOLDER + self.selected_item.text())
         self.refresh_data_list()
 
     def refresh_data_list(self):
+        update_file_status("Refreshing file list...")
         self.data_area.clear()
 
         try:
@@ -128,6 +133,8 @@ class DataManager(QWidget):
         else:
             self.delete_buttons.delete_all_button.setEnabled(False)
             self.output_buttons.export_all_button.setEnabled(False)
+
+        update_file_status("Done refreshing file list...")
 
     def get_list_items(self):
         items = [self.data_area.item(x) for x in range(self.data_area.count())]

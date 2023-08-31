@@ -14,6 +14,8 @@ from widgets.main_view.main_view import MainView
 from widgets.settings_view.settings_view import SettingsView
 from widgets.hat_display.display_thread import DisplayThread
 
+from dispatcher.senders import update_file_status
+
 from threads.timelapse_thread import TimelapseThread
 from threads.server import ServerThread
 from threads.sensor_manager import SensorManager
@@ -173,18 +175,26 @@ class MainWindow(QMainWindow):
     def copy_files(self, sender):
         new_path = self.usb_path + "/weather_station_data/"
         if not os.path.exists(new_path):
+            update_file_status(
+                self.usb_path + "/weather_station_data/ does not exist. Creating..."
+            )
             print(self.usb_path + "/weather_station_data/ does not exist. Creating...")
             os.makedirs(new_path)
 
         print("sender", sender)
         if sender["cmd"] == "all":
             # copy all
+            update_file_status("Exporting all files...")
             copy_tree(PATH_DATA_FOLDER, new_path)
+            update_file_status("Done exporting.")
         if sender["cmd"] == "single":
             # copy one
-            file_path = os.path.join(PATH_DATA_FOLDER, sender["file_name"])
+            file_name = sender["file_name"]
+            update_file_status(f"Exporting {file_name}...")
+            file_path = os.path.join(PATH_DATA_FOLDER, file_name)
             print(file_path)
             copy_single(file_path, new_path)
+            update_file_status(f"Done exporting {file_name}.")
 
         print("DONE")
 
