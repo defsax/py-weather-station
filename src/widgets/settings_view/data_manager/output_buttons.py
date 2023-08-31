@@ -18,7 +18,7 @@ class OutputDataButtons(QWidget):
         self.export_single_button.setText("Export Item")
         self.export_single_button.clicked.connect(
             lambda: self.double_check(
-                export_single_file(self.item),
+                lambda: export_single_file(self.item),
                 f"Are you sure you want to export {self.item}?",
             )
         )

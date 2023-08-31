@@ -10,7 +10,6 @@ from dispatcher.senders import update_light, update_voltage
 
 class PhidgetThread(QWidget):
     # set up pyqtsignal
-    # ~ set_time = pyqtSignal(str)
 
     def __init__(self):
         super(PhidgetThread, self).__init__()

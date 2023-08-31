@@ -172,22 +172,31 @@ class MainWindow(QMainWindow):
             print(self.usb_path + "/weather_station_data/ does not exist. Creating...")
             os.makedirs(new_path)
 
-        print("sender", sender)
         if sender["cmd"] == "all":
-            # copy all
-            update_file_status("Exporting all files...")
-            copy_tree(PATH_DATA_FOLDER, new_path)
-            update_file_status("Done exporting.")
-        if sender["cmd"] == "single":
-            # copy one
-            file_name = sender["file_name"]
-            update_file_status(f"Exporting {file_name}...")
-            file_path = os.path.join(PATH_DATA_FOLDER, file_name)
-            print(file_path)
-            copy_single(file_path, new_path)
-            update_file_status(f"Done exporting {file_name}.")
+            try:
+                update_file_status("Exporting all files...")
+                copy_tree(PATH_DATA_FOLDER, new_path)
+            except:
+                update_file_status("Error while exporting all...", 4)
+            else:
+                update_file_status("Done exporting.", 4)
+            finally:
+                update_file_status("Ready")
 
-        print("DONE")
+        if sender["cmd"] == "single":
+            file_name = sender["file_name"]
+            file_path = os.path.join(PATH_DATA_FOLDER, file_name)
+
+            try:
+                update_file_status(f"Exporting {file_name}...")
+
+                copy_single(file_path, new_path)
+            except:
+                update_file_status(f"Error while exporting {file_name}...", 4)
+            else:
+                update_file_status(f"Done exporting {file_name}.")
+            finally:
+                update_file_status("Ready")
 
 
 app = QApplication(sys.argv)

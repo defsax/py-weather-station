@@ -1,10 +1,10 @@
 from pydispatch import dispatcher
 
 
-def update_file_status(message):
+def update_file_status(message, duration=1):
     dispatcher.send(
-        signal="update_file_transfer_status",
-        sender=message,
+        signal="update_file_status",
+        sender={"message": message, "duration": duration},
     )
 
 

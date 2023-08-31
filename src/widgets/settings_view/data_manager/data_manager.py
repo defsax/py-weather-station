@@ -101,40 +101,47 @@ class DataManager(QWidget):
             self.output_buttons.export_all_button.setEnabled(is_usb_inserted)
 
     def remove_item(self):
-        # row = self.data_area.row(self.selected_item)
-        # print(self.selected_item.text())
-        # self.data_area.takeItem(row)
-        update_file_status(f"Deleting {self.selected_item.text()}...")
+        try:
+            update_file_status(f"Deleting {self.selected_item.text()}...")
+            delete_files(PATH_DATA_FOLDER + self.selected_item.text())
+        except:
+            update_file_status(f"Error deleting {self.selected_item.text()}...", 4)
+        else:
+            update_file_status(f"Deleted {self.selected_item.text()}...", 4)
+        finally:
+            update_file_status("Ready")
 
-        delete_files(PATH_DATA_FOLDER + self.selected_item.text())
         self.refresh_data_list()
 
     def refresh_data_list(self):
-        update_file_status("Refreshing file list...")
         self.data_area.clear()
 
         try:
+            update_file_status("Refreshing file list...")
             onlyfiles = [
                 f
                 for f in listdir(PATH_DATA_FOLDER)
                 if isfile(join(PATH_DATA_FOLDER, f))
             ]
+
+            if len(onlyfiles):
+                if self.usb_status.is_inserted:
+                    self.output_buttons.export_all_button.setEnabled(True)
+
+                self.delete_buttons.delete_all_button.setEnabled(True)
+                for file in onlyfiles:
+                    self.data_area.addItem(file)
+
+            else:
+                self.delete_buttons.delete_all_button.setEnabled(False)
+                self.output_buttons.export_all_button.setEnabled(False)
         except:
+            update_file_status(f"Error retrieving file list...", 2)
             print("Error reading settings.yml")
-
-        if len(onlyfiles):
-            if self.usb_status.is_inserted:
-                self.output_buttons.export_all_button.setEnabled(True)
-
-            self.delete_buttons.delete_all_button.setEnabled(True)
-            for file in onlyfiles:
-                self.data_area.addItem(file)
-
         else:
-            self.delete_buttons.delete_all_button.setEnabled(False)
-            self.output_buttons.export_all_button.setEnabled(False)
-
-        update_file_status("Done refreshing file list...")
+            update_file_status("Done refreshing file list.", 2)
+        finally:
+            update_file_status("Ready")
 
     def get_list_items(self):
         items = [self.data_area.item(x) for x in range(self.data_area.count())]

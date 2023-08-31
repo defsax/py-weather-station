@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from widgets.settings_view.data_manager.dialog import Dialog
-from dispatcher.senders import refresh_data_box
+from dispatcher.senders import refresh_data_box, update_file_status
 
 from helpers import delete_files
 from constants import PATH_DATA_FOLDER
@@ -46,11 +46,18 @@ class DeleteButtons(QWidget):
         dlg.exec()
 
     def delete_all(self):
-        print("deleting all data...")
+        try:
+            update_file_status("Deleting all data...")
 
-        # Add * to delete all
-        delete_files(PATH_DATA_FOLDER + "*")
-        refresh_data_box()
+            # Add * to delete all
+            delete_files(PATH_DATA_FOLDER + "*")
+        except:
+            update_file_status("Error deleting all data.", 4)
+        else:
+            update_file_status("Deleted all data.", 4)
+        finally:
+            update_file_status("Ready")
+            refresh_data_box()
 
     def delete_item(self):
         print(f"deleting{self.item}...")

@@ -1,11 +1,21 @@
 from pydispatch import dispatcher
 
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QLabel, QWidget, QHBoxLayout
+
+from threads.message_queue_thread import MessageQueueThread
 
 
 class FileTranferStatusBox(QWidget):
     def __init__(self):
         super(FileTranferStatusBox, self).__init__()
+
+        self.msg_queue = MessageQueueThread()
+        self.msg_queue.output_message.connect(self.set_status)
+
+        dispatcher.connect(
+            self.queue_message, signal="update_file_status", sender=dispatcher.Any
+        )
 
         layout = QHBoxLayout()
         self.setLayout(layout)
@@ -15,7 +25,7 @@ class FileTranferStatusBox(QWidget):
         # font = title.font()
         # font.setPointSize(16)
 
-        self.status = QLabel("")
+        self.status = QLabel("Ready")
         # font = self.status.font()
         # font.setPointSize(16)
         self.status.setStyleSheet("color: grey")
@@ -24,17 +34,15 @@ class FileTranferStatusBox(QWidget):
         layout.addStretch()
         layout.addWidget(self.status)
 
-        self.is_inserted = False
+    def queue_message(self, sender):
+        self.msg_queue.add_message(sender["message"], sender["duration"])
 
-        dispatcher.connect(
-            self.set_status, signal="update_file_transfer_status", sender=dispatcher.Any
-        )
-
-    def set_status(self, sender):
+    @pyqtSlot(str)
+    def set_status(self, message):
         # self.is_inserted = sender
+        print("status box message:", message)
 
         text_color = "grey"
-        status = sender
 
         # if sender:
         #     text_color = "green"
@@ -44,4 +52,4 @@ class FileTranferStatusBox(QWidget):
         #     status = "Disconnected"
         # format_string = '<font color="{0}">{1}</font>'
 
-        self.status.setText(f'<font color="{text_color}">{status}</font>')
+        self.status.setText(f'<font color="{text_color}">{message}</font>')
