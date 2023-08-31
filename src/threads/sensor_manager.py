@@ -1,5 +1,6 @@
 import time
 import statistics
+
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtSerialPort import QSerialPortInfo
 
@@ -8,7 +9,7 @@ from threads.weather_thread import WeatherThread
 from threads.arduino_thread import ArduinoHandler
 
 from helpers import set_sensor_status
-from pydispatch import dispatcher
+from dispatcher.senders import update_wind, update_temp_rh
 
 
 class SensorManager(QThread):
@@ -51,18 +52,8 @@ class SensorManager(QThread):
                 self.start_sensor.emit()
                 print("serial created")
         else:
-            # print("Temperature/RH sensor disconnected.")
             self.set_sensor_status.emit("temp_rh", "Disconnected", "red")
-
-            dispatcher.send(
-                signal="broadcast_serial",
-                sender={
-                    "current_humidity": 0.0,
-                    "current_temperature": 0.0,
-                    "offset_h": 0.0,
-                    "offset_t": 0.0,
-                },
-            )
+            update_temp_rh(0.0, 0.0, 0.0, 0.0)
 
             # close serial port if not already closed
             if self.t_rh_thread.serial != None:
@@ -98,12 +89,7 @@ class SensorManager(QThread):
         self.wind_speed = speed
         self.wind_speed_history.append(self.wind_speed)
         self.wind_dir = direction
-
-        # send values out
-        dispatcher.send(
-            signal="broadcast_wind",
-            sender={"wind_speed": self.wind_speed, "wind_dir": self.wind_dir},
-        )
+        update_wind(self.wind_speed, self.wind_dir)
 
     def getAverageSpeed(self):
         print("wind speed history:", self.wind_speed_history)

@@ -1,12 +1,13 @@
 import statistics
 import yaml
+from pydispatch import dispatcher
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSlot, QIODevice
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 
-from pydispatch import dispatcher
 from helpers import resource_path
+from dispatcher.senders import update_temp_rh
 
 
 class ArduinoHandler(QWidget):
@@ -95,16 +96,7 @@ class ArduinoHandler(QWidget):
                 self.temp = temp + self.temp_offset
                 self.temp_history.append(self.temp)
 
-                # send values out
-                dispatcher.send(
-                    signal="broadcast_serial",
-                    sender={
-                        "current_humidity": rh,
-                        "current_temperature": temp,
-                        "offset_h": self.rh_offset,
-                        "offset_t": self.temp_offset,
-                    },
-                )
+                update_temp_rh(rh, temp, self.rh_offset, self.temp_offset)
 
             except UnicodeDecodeError:
                 print("UnicodeDecodeError")

@@ -1,6 +1,6 @@
-from pydispatch import dispatcher
-
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QDialogButtonBox, QDialog
+
+from dispatcher.senders import shutdown_device
 
 
 class ShutdownDialog(QDialog):
@@ -25,10 +25,7 @@ class ShutdownDialog(QDialog):
         self.done(0)
         print("yes")
         # send shutdown signal out
-        dispatcher.send(
-            signal="shutdown_signal",
-            sender="shutdown",
-        )
+        shutdown_device()
 
     def reject(self):
         print("no")

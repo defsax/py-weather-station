@@ -3,9 +3,9 @@ import statistics
 from Phidget22.Phidget import *
 from Phidget22.Devices.VoltageInput import *
 
-
-from pydispatch import dispatcher
 from PyQt5.QtWidgets import QWidget
+
+from dispatcher.senders import update_light, update_voltage
 
 
 class PhidgetThread(QWidget):
@@ -53,12 +53,7 @@ class PhidgetThread(QWidget):
         self.light_voltage_reading = voltage
         self.wm2 = 0.4 * voltage * 1000
         self.wm2_history.append(self.wm2)
-
-        # send values out
-        dispatcher.send(
-            signal="broadcast_light",
-            sender={"wm2": self.wm2},
-        )
+        update_light(self.wm2)
 
     def getAverageLight(self):
         average = statistics.fmean(self.wm2_history)
@@ -67,13 +62,7 @@ class PhidgetThread(QWidget):
 
     def onBatteryVoltageChange(self, phidget_handle, voltage):
         self.battery_voltage_reading = voltage * 3.03
-        # print("Battery voltage: " + str(self.battery_voltage_reading))
-
-        # send values out
-        dispatcher.send(
-            signal="broadcast_battery",
-            sender={"voltage": self.battery_voltage_reading},
-        )
+        update_voltage(self.battery_voltage_reading)
 
     def clearAverages(self):
         self.wm2_history = []

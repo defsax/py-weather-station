@@ -41,19 +41,3 @@ class OutputDataButtons(QWidget):
         dlg = Dialog(export_method, prompt)
         dlg.setWindowTitle("Alert!")
         dlg.exec()
-
-    # def export_all(self):
-    #     print("outputting to usb...")
-    #     # send output signal out
-    #     dispatcher.send(
-    #         signal="output_files_signal",
-    #         sender={"cmd": "all"},
-    #     )
-
-    # def export_item(self):
-    #     print("outputting to usb...")
-    #     # send output signal out
-    #     dispatcher.send(
-    #         signal="output_files_signal",
-    #         sender={"cmd": "single", "file_name": self.item},
-    #     )

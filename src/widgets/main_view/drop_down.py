@@ -17,7 +17,7 @@ class DropDown(QWidget):
         self.setLayout(layout)
 
         dispatcher.connect(
-            self.toggle_status, signal="logging_status", sender=dispatcher.Any
+            self.toggle_status, signal="toggle_logging", sender=dispatcher.Any
         )
 
     def handleButton(self):
@@ -30,7 +30,7 @@ class DropDown(QWidget):
                 self.config = yaml.safe_load(open(path))
             except:
                 print("Error loading settings for mission ids.")
-            for i, item in enumerate(self.config["mission_ids"]):
+            for item in self.config["mission_ids"]:
                 self.combobox.addItem(item)
         else:
             # clear self.combobox

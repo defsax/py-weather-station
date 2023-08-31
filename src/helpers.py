@@ -5,8 +5,12 @@ import os
 import glob
 import shutil
 
-from pydispatch import dispatcher
 from PyQt5.QtCore import pyqtSlot, QFile, QIODevice, QTextStream
+
+from dispatcher.senders import (
+    update_temp_sensor_connection_status,
+    update_light_sensor_connection_status,
+)
 
 
 # return list
@@ -43,11 +47,9 @@ def get_t_rh_port():
 @pyqtSlot(str, str)
 def set_sensor_status(sensor, status, col):
     if sensor == "temp_rh":
-        dispatcher.send(signal="set_temp_status", sender={"status": status, "col": col})
+        update_temp_sensor_connection_status(status, col)
     if sensor == "light":
-        dispatcher.send(
-            signal="set_light_status", sender={"status": status, "col": col}
-        )
+        update_light_sensor_connection_status(status, col)
 
 
 def resource_path(relative_path):

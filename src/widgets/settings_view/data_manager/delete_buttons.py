@@ -1,7 +1,7 @@
-from pydispatch import dispatcher
-
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
+
 from widgets.settings_view.data_manager.dialog import Dialog
+from dispatcher.senders import refresh_data_box
 
 from helpers import delete_files
 from constants import PATH_DATA_FOLDER
@@ -50,11 +50,7 @@ class DeleteButtons(QWidget):
 
         # Add * to delete all
         delete_files(PATH_DATA_FOLDER + "*")
-
-        dispatcher.send(
-            signal="refresh_file_data",
-            sender="output",
-        )
+        refresh_data_box()
 
     def delete_item(self):
         print(f"deleting{self.item}...")

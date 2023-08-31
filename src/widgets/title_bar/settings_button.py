@@ -5,6 +5,7 @@ from pydispatch import dispatcher
 
 from helpers import write_to_yaml, resource_path
 from constants import PATH_SETTINGS_ICON
+from dispatcher.senders import refresh_data_box, update_temp_rh_offset
 
 
 class SettingsButton(QWidget):
@@ -36,16 +37,12 @@ class SettingsButton(QWidget):
         self.setLayout(layout)
 
         dispatcher.connect(
-            self.toggle_status, signal="logging_status", sender=dispatcher.Any
+            self.toggle_status, signal="toggle_logging", sender=dispatcher.Any
         )
 
     def handleButton(self):
         if self.main_view.isVisible():
-            # Update file list in data tab
-            dispatcher.send(
-                signal="refresh_file_data",
-                sender="output",
-            )
+            refresh_data_box()
 
             # switch views
             self.main_view.hide()
@@ -66,13 +63,9 @@ class SettingsButton(QWidget):
             write_to_yaml("mission_ids", mission_ids)
 
             # update arduino handler with the correct slider values
-            dispatcher.send(
-                signal="set_offset",
-                sender={
-                    "hum_offset": self.settings_view.slider_manager.hum_slider.offset,
-                    "temp_offset": self.settings_view.slider_manager.temp_slider.offset,
-                },
-            )
+            h_offset = self.settings_view.slider_manager.hum_slider.offset
+            t_offset = self.settings_view.slider_manager.temp_slider.offset
+            update_temp_rh_offset(h_offset, t_offset)
 
             # switch views
             self.main_view.show()

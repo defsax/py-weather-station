@@ -14,7 +14,7 @@ from widgets.main_view.main_view import MainView
 from widgets.settings_view.settings_view import SettingsView
 from widgets.hat_display.display_thread import DisplayThread
 
-from dispatcher.senders import update_file_status
+from dispatcher.senders import update_file_status, update_usb_status
 
 from threads.timelapse_thread import TimelapseThread
 from threads.server import ServerThread
@@ -116,17 +116,10 @@ class MainWindow(QMainWindow):
         if device.action == "change" and directory:
             new_path = os.path.join("/media/pi", directory[0])
             self.usb_path = new_path
-
-            dispatcher.send(
-                signal="usb_is_inserted",
-                sender=True,
-            )
+            update_usb_status(True)
         if device.action == "remove":
             print("No device or device removed.")
-            dispatcher.send(
-                signal="usb_is_inserted",
-                sender=False,
-            )
+            update_usb_status(False)
 
     #
     # Key bindings and related functions
@@ -155,14 +148,12 @@ class MainWindow(QMainWindow):
             return
 
         if sender["msg"] == "start":
-            dispatcher.send(signal="logging_status", sender={"msg": "start"})
             self.main_view.content.options.start_stop_button.set_button_style(
                 "Stop", "red"
             )
             self.timelapse_thread.setup(mission_id)
             self.timelapse_thread.start()
         elif sender["msg"] == "stop":
-            dispatcher.send(signal="logging_status", sender={"msg": "stop"})
             self.main_view.content.options.start_stop_button.set_button_style(
                 "Start", "green"
             )
