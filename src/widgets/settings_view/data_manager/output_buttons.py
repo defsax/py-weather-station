@@ -1,7 +1,7 @@
-from pydispatch import dispatcher
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from widgets.settings_view.data_manager.dialog import Dialog
+from dispatcher.senders import export_all_files, export_single_file
 
 
 class OutputDataButtons(QWidget):
@@ -18,7 +18,8 @@ class OutputDataButtons(QWidget):
         self.export_single_button.setText("Export Item")
         self.export_single_button.clicked.connect(
             lambda: self.double_check(
-                self.export_item, f"Are you sure you want to export {self.item}?"
+                export_single_file(self.item),
+                f"Are you sure you want to export {self.item}?",
             )
         )
         self.export_single_button.setEnabled(False)
@@ -27,7 +28,7 @@ class OutputDataButtons(QWidget):
         self.export_all_button.setText("Export All Data")
         self.export_all_button.clicked.connect(
             lambda: self.double_check(
-                self.export_all, "Are you sure you want to export all data?"
+                export_all_files, "Are you sure you want to export all data?"
             )
         )
         self.export_all_button.setEnabled(False)
@@ -41,18 +42,18 @@ class OutputDataButtons(QWidget):
         dlg.setWindowTitle("Alert!")
         dlg.exec()
 
-    def export_all(self):
-        print("outputting to usb...")
-        # send output signal out
-        dispatcher.send(
-            signal="output_files_signal",
-            sender={"cmd": "all"},
-        )
+    # def export_all(self):
+    #     print("outputting to usb...")
+    #     # send output signal out
+    #     dispatcher.send(
+    #         signal="output_files_signal",
+    #         sender={"cmd": "all"},
+    #     )
 
-    def export_item(self):
-        print("outputting to usb...")
-        # send output signal out
-        dispatcher.send(
-            signal="output_files_signal",
-            sender={"cmd": "single", "file_name": self.item},
-        )
+    # def export_item(self):
+    #     print("outputting to usb...")
+    #     # send output signal out
+    #     dispatcher.send(
+    #         signal="output_files_signal",
+    #         sender={"cmd": "single", "file_name": self.item},
+    #     )
