@@ -4,6 +4,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QLabel, QWidget, QHBoxLayout
 
 from threads.message_queue_thread import MessageQueueThread
+from constants import BASIC_FONT_SIZE
 
 
 class FileTranferStatusBox(QWidget):
@@ -23,12 +24,13 @@ class FileTranferStatusBox(QWidget):
 
         title = QLabel("Status... ")
         # font = title.font()
-        # font.setPointSize(16)
+        # font.setPointSize(BASIC_FONT_SIZE)
+        # title.setFont(font)
 
         self.status = QLabel("Ready")
         # font = self.status.font()
-        # font.setPointSize(16)
-        self.status.setStyleSheet("color: grey")
+        # font.setPointSize(BASIC_FONT_SIZE)
+        # self.status.setFont(font)
 
         layout.addWidget(title)
         layout.addStretch()
@@ -39,17 +41,4 @@ class FileTranferStatusBox(QWidget):
 
     @pyqtSlot(str)
     def set_status(self, message):
-        # self.is_inserted = sender
-        print("status box message:", message)
-
-        text_color = "grey"
-
-        # if sender:
-        #     text_color = "green"
-        #     status = "Connected"
-        # else:
-        #     text_color = "red"
-        #     status = "Disconnected"
-        # format_string = '<font color="{0}">{1}</font>'
-
-        self.status.setText(f'<font color="{text_color}">{message}</font>')
+        self.status.setText(message)

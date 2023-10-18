@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 from widgets.settings_view.data_manager.dialog import Dialog
 from dispatcher.senders import export_all_files, export_single_file
 
+from constants import BLUE
+
 
 class OutputDataButtons(QWidget):
     def __init__(self):
@@ -47,10 +49,14 @@ class OutputDataButtons(QWidget):
 
     def set_style(self):
         self.export_all_button.setStyleSheet(
-            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: "
+            + BLUE
+            + "; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
         )
         self.export_single_button.setStyleSheet(
-            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: "
+            + BLUE
+            + "; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
         )
         self.export_all_button.setFont(QtGui.QFont("AnyStyle", 20))
         self.export_single_button.setFont(QtGui.QFont("AnyStyle", 20))

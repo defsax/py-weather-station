@@ -18,7 +18,7 @@ from widgets.settings_view.data_manager.transfer_status_box import FileTranferSt
 from dispatcher.senders import update_file_status
 
 from helpers import delete_files
-from constants import PATH_DATA_FOLDER, BASIC_FONT_SIZE
+from constants import PATH_DATA_FOLDER, BASIC_FONT_SIZE, BLUE
 
 
 class DataManager(QWidget):
@@ -37,6 +37,7 @@ class DataManager(QWidget):
         font.setPointSize(BASIC_FONT_SIZE)
         self.data_area.setFont(font)
 
+        self.data_area.setStyleSheet("selection-background-color: " + BLUE)
         self.data_area.setSelectionMode(QAbstractItemView.SingleSelection)
         self.data_area.currentItemChanged.connect(self.on_selection_change)
 

@@ -2,6 +2,10 @@ BASIC_FONT_SIZE = 18
 TAB_FONT_SIZE = 18
 TITLE_FONT_SIZE = 18
 
+GREEN = "#339900"
+RED = "#FF4D4D"
+BLUE = "#0099CC"
+
 PATH_DATA_FOLDER = "/home/pi/weather_station_data/"
 
 # STYLESHEETS

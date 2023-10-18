@@ -1,4 +1,7 @@
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton
+
+from constants import RED, GREEN
 
 
 class ButtonsWidget(QWidget):
@@ -24,6 +27,19 @@ class ButtonsWidget(QWidget):
         self.remove_button.setText("Remove")
         self.remove_button.clicked.connect(self.remove_item)
         self.remove_button.setEnabled(False)
+
+        self.remove_button.setStyleSheet(
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: "
+            + RED
+            + "; color: #000; } :disabled { background-color: #cccccc; color: #666666;}"
+        )
+        self.add_button.setStyleSheet(
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color:"
+            + GREEN
+            + ";color: #000; } :disabled { background-color: #cccccc; color: #666666;}"
+        )
+        self.remove_button.setFont(QtGui.QFont("AnyStyle", 20))
+        self.add_button.setFont(QtGui.QFont("AnyStyle", 20))
 
         layout.addWidget(self.add_button)
         layout.addWidget(self.remove_button)

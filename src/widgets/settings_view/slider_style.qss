@@ -14,8 +14,9 @@
     QSlider::groove:horizontal:hover {
         background-color: rgb(55, 62, 76);
     }
+    
     QSlider::handle:horizontal {
-        background-color: rgb(85, 170, 255);
+        background-color: #0099cc;
         border: none;
         height: 40px;
         width: 40px;

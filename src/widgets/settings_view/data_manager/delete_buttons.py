@@ -5,7 +5,7 @@ from widgets.settings_view.data_manager.dialog import Dialog
 from dispatcher.senders import refresh_data_box, update_file_status
 
 from helpers import delete_files
-from constants import PATH_DATA_FOLDER
+from constants import PATH_DATA_FOLDER, RED
 
 
 class DeleteButtons(QWidget):
@@ -68,11 +68,14 @@ class DeleteButtons(QWidget):
 
     def set_style(self):
         self.delete_all_button.setStyleSheet(
-            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: "
+            + RED
+            + "; color: #000; } :disabled { background-color: #cccccc; color: #666666;}"
         )
         self.delete_item_button.setStyleSheet(
-            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
-            # "padding: 10px; border-radius: 0px; background-color: green"
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: "
+            + RED
+            + "; color: #000; } :disabled { background-color: #cccccc; color: #666666;}"
         )
         self.delete_all_button.setFont(QtGui.QFont("AnyStyle", 20))
         self.delete_item_button.setFont(QtGui.QFont("AnyStyle", 20))

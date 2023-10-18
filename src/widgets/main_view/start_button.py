@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from dispatcher.senders import toggle_data_logging
 
+from constants import GREEN
+
 
 class StartStop(QWidget):
     def __init__(self):
@@ -15,7 +17,7 @@ class StartStop(QWidget):
         self.start_btn = QPushButton("Start", self)
         self.start_btn.clicked.connect(self.handle_start)
         self.start_btn.setStyleSheet(
-            "padding: 10px; border-radius: 0px; background-color: green"
+            "padding: 10px; border-radius: 0px; background-color: " + GREEN
         )
         self.start_btn.setFont(QtGui.QFont("AnyStyle", 25))
 

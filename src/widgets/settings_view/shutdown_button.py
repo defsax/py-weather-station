@@ -16,9 +16,9 @@ class ShutdownButton(QWidget):
         self.shutdown_btn.clicked.connect(self.handle_shutdown)
 
         self.shutdown_btn.setStyleSheet(
-            "padding: 10px; border-radius: 0px; background-color: red"
+            "padding: 10px; border-radius: 0px; background-color: #FF4D4D;"
         )
-        self.shutdown_btn.setFont(QtGui.QFont("AnyStyle", 16))
+        self.shutdown_btn.setFont(QtGui.QFont("AnyStyle", 25))
         layout.addWidget(self.shutdown_btn)
 
     def handle_shutdown(self):
