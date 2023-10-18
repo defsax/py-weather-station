@@ -1,3 +1,4 @@
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from widgets.settings_view.data_manager.dialog import Dialog
@@ -36,8 +37,20 @@ class OutputDataButtons(QWidget):
         layout.addWidget(self.export_single_button)
         layout.addWidget(self.export_all_button)
 
+        self.set_style()
+
     def double_check(self, export_method, prompt):
         print("Output data button...")
         dlg = Dialog(export_method, prompt)
         dlg.setWindowTitle("Alert!")
         dlg.exec()
+
+    def set_style(self):
+        self.export_all_button.setStyleSheet(
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
+        )
+        self.export_single_button.setStyleSheet(
+            "QPushButton{ padding: 10px; border-radius: 0px; } :enabled { background-color: #0099cc; color: #ffffff; } :disabled { background-color: #cccccc; color: #666666;}"
+        )
+        self.export_all_button.setFont(QtGui.QFont("AnyStyle", 20))
+        self.export_single_button.setFont(QtGui.QFont("AnyStyle", 20))

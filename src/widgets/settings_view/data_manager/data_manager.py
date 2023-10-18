@@ -5,6 +5,7 @@ from pydispatch import dispatcher
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QListWidget,
     QAbstractItemView,
 )
@@ -47,8 +48,11 @@ class DataManager(QWidget):
         layout.addWidget(self.data_area)
         layout.addWidget(self.usb_status)
         layout.addWidget(self.file_status)
-        layout.addWidget(self.output_buttons)
-        layout.addWidget(self.delete_buttons)
+
+        box_layout = QHBoxLayout()
+        layout.addLayout(box_layout)
+        box_layout.addWidget(self.output_buttons)
+        box_layout.addWidget(self.delete_buttons)
 
         dispatcher.connect(
             self.on_usb_change,
